@@ -1,0 +1,304 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcm.modules.system.department.dao.SysDepartmentMapper">
+    <cache/>
+    <resultMap id="departmentMap" type="com.kcm.modules.system.department.entity.SysDepartment">
+        <id column="DEPARTMENT_ID" property="departmentId" jdbcType="VARCHAR"/>
+        <result column="PARENT_DEPARTMENT_ID" property="parentDepartmentId" jdbcType="VARCHAR"/>
+        <result column="DEPARTMENT_NAME" property="departmentName" jdbcType="VARCHAR"/>
+        <result column="SEQUENCE" property="sequence" jdbcType="NUMERIC"/>
+        <result column="PHONE" property="phone" jdbcType="VARCHAR"/>
+        <result column="EMAIL" property="email" jdbcType="VARCHAR"/>
+        <result column="DEPARTMENT_TYPE" property="departmentType" jdbcType="VARCHAR"/>
+        <result column="REMARK" property="remark" jdbcType="VARCHAR"/>
+        <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
+        <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime"  jdbcType="TIMESTAMP"/>
+        <result column="CREATE_DEPT_ID" property="createDeptId" jdbcType="VARCHAR"/>
+        <result column="EDIT_USER_ID" property="editUserId" jdbcType="VARCHAR"/>
+        <result column="EDIT_TIME" property="editTime"  jdbcType="TIMESTAMP"/>
+        <result column="EDIT_DEPT_ID" property="editDeptId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="departmentList">
+        DEPARTMENT_ID,PARENT_DEPARTMENT_ID,DEPARTMENT_NAME,SEQUENCE,PHONE,
+        EMAIL,DEPARTMENT_TYPE,REMARK,ACTIVE,CREATE_USER_ID,CREATE_TIME,
+        CREATE_DEPT_ID,EDIT_USER_ID,EDIT_TIME,EDIT_DEPT_ID
+
+    </sql>
+
+
+    <!--增加部门全部信息-->
+    <insert id="insertDepartment" parameterType="com.kcm.modules.system.department.entity.SysDepartment">
+        insert into SYS_DEPARTMENT(DEPARTMENT_ID,PARENT_DEPARTMENT_ID,DEPARTMENT_NAME,SEQUENCE,PHONE,
+                                   EMAIL,DEPARTMENT_TYPE,REMARK,ACTIVE,CREATE_USER_ID,CREATE_TIME,
+                                   CREATE_DEPT_ID,EDIT_USER_ID,EDIT_TIME,EDIT_DEPT_ID)
+        values (#{departmentId,jdbcType=VARCHAR},#{parentDepartmentId,jdbcType=VARCHAR},
+                #{departmentName,jdbcType=VARCHAR},#{sequence,jdbcType=NUMERIC},
+                #{phone,jdbcType=VARCHAR},#{email,jdbcType=VARCHAR},
+                #{departmentType,jdbcType=VARCHAR},#{remark,jdbcType=VARCHAR},
+                #{active,jdbcType=VARCHAR},#{createUserId,jdbcType=VARCHAR},
+                #{createTime,jdbcType=TIMESTAMP},#{createDeptId,jdbcType=VARCHAR},
+                #{editUserId,jdbcType=VARCHAR},#{editTime,jdbcType=TIMESTAMP},
+                #{editDeptId,jdbcType=VARCHAR})
+    </insert>
+
+
+    <!--新增部分或全部部门信息-->
+    <insert id="insertSelective" parameterType="com.kcm.modules.system.department.entity.SysDepartment">
+        insert into SYS_DEPARTMENT
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="departmentId != null">
+                DEPARTMENT_ID,
+            </if>
+            <if test="parentDepartmentId != null">
+                PARENT_DEPARTMENT_ID,
+            </if>
+            <if test="departmentName != null">
+                DEPARTMENT_NAME,
+            </if>
+            <if test="sequence != null">
+                SEQUENCE,
+            </if>
+            <if test="phone != null">
+                PHONE,
+            </if>
+            <if test="email != null">
+                EMAIL,
+            </if>
+            <if test="departmentType != null">
+                DEPARTMENT_TYPE,
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="active != null">
+                ACTIVE,
+            </if>
+            <if test="createUserId != null">
+                CREATE_USER_ID,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="createDeptId != null">
+                CREATE_DEPT_ID,
+            </if>
+            <if test="editUserId != null">
+                EDIT_USER_ID,
+            </if>
+            <if test="editTime != null">
+                EDIT_TIME,
+            </if>
+            <if test="editDeptId != null">
+                EDIT_DEPT_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="departmentId != null">
+                #{departmentId,jdbcType=VARCHAR},
+            </if>
+            <if test="parentDepartmentId != null">
+                #{parentDepartmentId,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentName != null">
+                #{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="sequence != null">
+                #{sequence,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                #{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentType != null">
+                #{departmentType,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+
+            <if test="active != null">
+                #{active,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDeptId != null">
+                #{createDeptId,jdbcType=VARCHAR},
+            </if>
+            <if test="editUserId != null">
+                #{editUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="editTime != null">
+                #{editTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="editDeptId != null">
+                #{editDeptId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+
+    <!--更新全部部门信息-->
+    <update id="updateDepartmentByPrimaryKey" parameterType="com.kcm.modules.system.department.entity.SysDepartment">
+        update SYS_DEPARTMENT
+        set
+            DEPARTMENT_ID=#{departmentId,jdbcType=VARCHAR},
+            PARENT_DEPARTMENT_ID=#{parentDepartmentId,jdbcType=VARCHAR},
+            DEPARTMENT_NAME=#{departmentName,jdbcType=VARCHAR},
+            SEQUENCE=#{sequence,jdbcType=INTEGER},
+            PHONE=#{phone,jdbcType=VARCHAR},
+            EMAIL=#{email,jdbcType=VARCHAR},
+            DEPARTMENT_TYPE=#{departmentType,jdbcType=VARCHAR},
+            REMARK=#{remark,jdbcType=VARCHAR},
+            ACTIVE=#{active,jdbcType=VARCHAR},
+            CREATE_USER_ID=#{createUserId,jdbcType=VARCHAR},
+            CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+            CREATE_DEPT_ID=#{createDeptId,jdbcType=VARCHAR},
+            EDIT_USER_ID=#{editUserId,jdbcType=VARCHAR},
+            EDIT_TIME=#{editTime,jdbcType=TIMESTAMP},
+            EDIT_DEPT_ID=#{editDeptId,jdbcType=VARCHAR}
+        where DEPARTMENT_ID=#{departmentId,jdbcType=VARCHAR}
+    </update>
+
+    <!--修改部门全部或部分信息-->
+    <update id="updateSelective" parameterType="com.kcm.modules.system.department.entity.SysDepartment">
+        update SYS_DEPARTMENT
+        <set>
+            <if test="departmentId != null">
+                DEPARTMENT_ID=#{departmentId,jdbcType=VARCHAR},
+            </if>
+            <if test="parentDepartmentId != null">
+                PARENT_DEPARTMENT_ID=#{parentDepartmentId,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentName != null">
+                DEPARTMENT_NAME=#{departmentName,jdbcType=VARCHAR},
+            </if>
+            <if test="sequence != null">
+                SEQUENCE=#{sequence,jdbcType=INTEGER},
+            </if>
+            <if test="phone != null">
+                PHONE=#{phone,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null">
+                EMAIL=#{email,jdbcType=VARCHAR},
+            </if>
+            <if test="departmentType != null">
+                DEPARTMENT_TYPE=#{departmentType,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK=#{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="active != null">
+                ACTIVE=#{active,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                CREATE_USER_ID=#{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDeptId != null">
+                CREATE_DEPT_ID=#{createDeptId,jdbcType=VARCHAR},
+            </if>
+            <if test="editUserId != null">
+                EDIT_USER_ID=#{editUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="editTime != null">
+                EDIT_TIME=#{editTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="editDeptId != null">
+                EDIT_DEPT_ID=#{editDeptId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where DEPARTMENT_ID=#{departmentId,jdbcType=VARCHAR}
+    </update>
+
+    <!--通过主键查询部门信息-->
+    <select id="selectByPrimary" parameterType="java.lang.String" resultMap="departmentMap">
+        SELECT
+        <include refid="departmentList"/>
+        FROM SYS_DEPARTMENT
+        WHERE DEPARTMENT_ID=#{departmentId,jdbcType=VARCHAR} and ACTIVE = '1'
+    </select>
+
+    <!--查询所有部门信息-->
+    <select id="selectAll"  resultMap="departmentMap">
+        select
+               d.DEPARTMENT_ID,
+               d.PARENT_DEPARTMENT_ID,
+               d.DEPARTMENT_NAME,
+               d.SEQUENCE,
+               d.PHONE,
+               d.EMAIL,
+               d.DEPARTMENT_TYPE,
+               d.REMARK,
+               d.ACTIVE,
+               d.CREATE_USER_ID,
+               d.CREATE_TIME,
+               d.CREATE_DEPT_ID,
+               d.EDIT_USER_ID,
+               d.EDIT_TIME,
+               d.EDIT_DEPT_ID
+        from SYS_DEPARTMENT d
+        where ACTIVE ='1'
+    </select>
+    <!--通过主键删除信息-->
+    <update id="deleteByPrimary" parameterType="java.lang.String">
+       update SYS_DEPARTMENT
+       <set>
+           ACTIVE = '0'
+       </set>
+       where DEPARTMENT_ID=#{departmentId,jdbcType=VARCHAR}
+    </update>
+
+    <!--通过父部门ID查询子部门-->
+    <select id="selectByParentId" resultMap="departmentMap" parameterType="java.lang.String">
+        select
+               d.DEPARTMENT_ID,
+               d.PARENT_DEPARTMENT_ID,
+               d.DEPARTMENT_NAME,
+               d.SEQUENCE,
+               d.PHONE,
+               d.EMAIL,
+               d.DEPARTMENT_TYPE,
+               d.REMARK,
+               d.ACTIVE,
+               d.CREATE_USER_ID,
+               d.CREATE_TIME,
+               d.CREATE_DEPT_ID,
+               d.EDIT_USER_ID,
+               d.EDIT_TIME,
+               d.EDIT_DEPT_ID
+        from SYS_DEPARTMENT d
+        where PARENT_DEPARTMENT_ID=#{parentDepartmentId,jdbcType=VARCHAR} and ACTIVE = '1'
+    </select>
+
+    <!--通过部门名称查询部门信息-->
+    <select id="selectByDepartmentName" resultMap="departmentMap" parameterType="java.lang.String">
+        select
+               d.DEPARTMENT_ID,
+               d.PARENT_DEPARTMENT_ID,
+               d.DEPARTMENT_NAME,
+               d.SEQUENCE,
+               d.PHONE,
+               d.EMAIL,
+               d.DEPARTMENT_TYPE,
+               d.REMARK,
+               d.ACTIVE,
+               d.CREATE_USER_ID,
+               d.CREATE_TIME,
+               d.CREATE_DEPT_ID,
+               d.EDIT_USER_ID,
+               d.EDIT_TIME,
+               d.EDIT_DEPT_ID
+        from SYS_DEPARTMENT d
+        where DEPARTMENT_NAME=#{departmentName,jdbcType=VARCHAR} and ACTIVE='1'
+    </select>
+ </mapper>

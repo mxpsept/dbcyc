@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.diagnosis.oilwell.abnormalgt.dao.AbnormalGtDao">
+  <resultMap id="BaseResultMap" type="com.kcm.modules.diagnosis.oilwell.abnormalgt.entity.AbnormalGt">
+    <result column="PRIMARY_ID" jdbcType="VARCHAR" property="primaryId" />
+    <result column="WELL_ID" jdbcType="VARCHAR" property="wellId" />
+    <result column="WELL_COMMON_NAME" jdbcType="VARCHAR" property="wellCommonName" />
+    <result column="CHECK_DATE" jdbcType="TIMESTAMP" property="checkDate" />
+    <result column="DYNA" jdbcType="VARCHAR" property="dyna" />
+    <result column="STROKE" jdbcType="DECIMAL" property="stroke" />
+    <result column="FREQUENCY" jdbcType="DECIMAL" property="frequency" />
+    <result column="SUSP_MAX_LOAD" jdbcType="DECIMAL" property="suspMaxLoad" />
+    <result column="SUSP_MIN_LOAD" jdbcType="DECIMAL" property="suspMinLoad" />
+    <result column="ABNORMAL_PROBLEM" jdbcType="VARCHAR" property="abnormalProblem" />
+  </resultMap>
+
+  <resultMap id="AbnormalGtVo" type="com.kcm.modules.diagnosis.oilwell.abnormalgt.vo.AbnormalGtVo" extends="BaseResultMap">
+    <result column="ORG_NAME" jdbcType="VARCHAR" property="orgName" />
+    <result column="RN" jdbcType="VARCHAR" property="rn" />
+  </resultMap>
+  <insert id="insert" parameterType="com.kcm.modules.diagnosis.oilwell.abnormalgt.entity.AbnormalGt">
+    insert into ABNORMAL_GT (PRIMARY_ID, WELL_ID, WELL_COMMON_NAME, 
+      CHECK_DATE, DYNA, STROKE, 
+      FREQUENCY, SUSP_MAX_LOAD, SUSP_MIN_LOAD, 
+      ABNORMAL_PROBLEM)
+    values (#{primaryId,jdbcType=VARCHAR}, #{wellId,jdbcType=VARCHAR}, #{wellCommonName,jdbcType=VARCHAR}, 
+      #{checkDate,jdbcType=TIMESTAMP}, #{dyna,jdbcType=VARCHAR}, #{stroke,jdbcType=DECIMAL}, 
+      #{frequency,jdbcType=DECIMAL}, #{suspMaxLoad,jdbcType=DECIMAL}, #{suspMinLoad,jdbcType=DECIMAL}, 
+      #{abnormalProblem,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kcm.modules.diagnosis.oilwell.abnormalgt.entity.AbnormalGt">
+    insert into ABNORMAL_GT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="primaryId != null">
+        PRIMARY_ID,
+      </if>
+      <if test="wellId != null">
+        WELL_ID,
+      </if>
+      <if test="wellCommonName != null">
+        WELL_COMMON_NAME,
+      </if>
+      <if test="checkDate != null">
+        CHECK_DATE,
+      </if>
+      <if test="dyna != null">
+        DYNA,
+      </if>
+      <if test="stroke != null">
+        STROKE,
+      </if>
+      <if test="frequency != null">
+        FREQUENCY,
+      </if>
+      <if test="suspMaxLoad != null">
+        SUSP_MAX_LOAD,
+      </if>
+      <if test="suspMinLoad != null">
+        SUSP_MIN_LOAD,
+      </if>
+      <if test="abnormalProblem != null">
+        ABNORMAL_PROBLEM,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="primaryId != null">
+        #{primaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="wellId != null">
+        #{wellId,jdbcType=VARCHAR},
+      </if>
+      <if test="wellCommonName != null">
+        #{wellCommonName,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDate != null">
+        #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dyna != null">
+        #{dyna,jdbcType=VARCHAR},
+      </if>
+      <if test="stroke != null">
+        #{stroke,jdbcType=DECIMAL},
+      </if>
+      <if test="frequency != null">
+        #{frequency,jdbcType=DECIMAL},
+      </if>
+      <if test="suspMaxLoad != null">
+        #{suspMaxLoad,jdbcType=DECIMAL},
+      </if>
+      <if test="suspMinLoad != null">
+        #{suspMinLoad,jdbcType=DECIMAL},
+      </if>
+      <if test="abnormalProblem != null">
+        #{abnormalProblem,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectAllPage" parameterType="java.lang.String" resultMap="AbnormalGtVo">
+    select row_number() over (ORDER BY b.CHECK_DATE DESC)rn,b.PRIMARY_ID,b.WELL_ID,b.WELL_COMMON_NAME,b.CHECK_DATE,
+    b.DYNA,b.ABNORMAL_PROBLEM,b.ORG_NAME
+    FROM (
+         SELECT row_number() over (PARTITION by a.WELL_ID ORDER BY a.CHECK_DATE desc)rn ,a.*,c.ORG_NAME
+         from ABNORMAL_GT a
+         left join CD_WELL_SOURCE c ON a.WELL_ID =c.WELL_NAME
+         WHERE 1=1
+         <if test="checkDate != null and checkDate != ''">
+            and to_char(a.CHECK_DATE,'yyyy-mm-dd')=#{checkDate,jdbcType=VARCHAR}
+         </if>
+         <if test='orgName!="全站"'>
+            and c.ORG_NAME=#{orgName,jdbcType=VARCHAR}
+         </if>
+         )b
+    WHERE b.rn ='1'
+  </select>
+
+  <select id="selectByIdAndDate" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select a.*
+    from ABNORMAL_GT a
+    where a.WELL_ID=#{wellId,jdbcType=VARCHAR}
+    <if test="checkDate != null and checkDate != ''">
+      and to_char(a.CHECK_DATE,'yyyy-mm-dd')=#{checkDate,jdbcType=VARCHAR}
+    </if>
+    ORDER BY a.CHECK_DATE DESC
+  </select>
+
+</mapper>

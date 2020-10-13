@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.examine.standard.dao.BizExamineIndexDetailDao">
+  <resultMap id="BaseResultMap" type="com.kcm.modules.examine.standard.entity.BizExamineIndexDetail">
+    <id column="INDEX_D_ID" jdbcType="VARCHAR" property="indexDId" />
+    <result column="EXAMINE_CONTENT" jdbcType="VARCHAR" property="examineContent" />
+    <result column="REQUIREMENT" jdbcType="VARCHAR" property="requirement" />
+    <result column="EXAMINE_STANDARD" jdbcType="VARCHAR" property="examineStandard" />
+    <result column="SCORE" jdbcType="DECIMAL" property="score" />
+    <result column="SEQUENCE" jdbcType="DECIMAL" property="sequence" />
+    <result column="INDEX_ID" jdbcType="VARCHAR" property="indexId" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="ACTIVE" jdbcType="VARCHAR" property="active" />
+    <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_DEPT_ID" jdbcType="VARCHAR" property="createDeptId" />
+    <result column="EDIT_USER_ID" jdbcType="VARCHAR" property="editUserId" />
+    <result column="EDIT_TIME" jdbcType="TIMESTAMP" property="editTime" />
+    <result column="EDIT_DEPT_ID" jdbcType="VARCHAR" property="editDeptId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    INDEX_D_ID, EXAMINE_CONTENT, REQUIREMENT, EXAMINE_STANDARD, SCORE, "SEQUENCE", INDEX_ID, 
+    REMARK, ACTIVE, CREATE_USER_ID, CREATE_TIME, CREATE_DEPT_ID, EDIT_USER_ID, EDIT_TIME, 
+    EDIT_DEPT_ID
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_EXAMINE_INDEX_DETAIL
+    where INDEX_D_ID = #{indexDId,jdbcType=VARCHAR} and AVTIVE = '1'
+  </select>
+
+  <update id="deleteByPrimaryKey" parameterType="java.lang.String">
+    update BIZ_EXAMINE_INDEX_DETAIL
+    <set>
+      ACTIVE ='0'
+    </set>
+    where INDEX_D_ID = #{indexDId,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKeySelective" parameterType="com.kcm.modules.examine.standard.entity.BizExamineIndexDetail">
+    update BIZ_EXAMINE_INDEX_DETAIL
+    <set>
+      <if test="examineContent != null">
+        EXAMINE_CONTENT = #{examineContent,jdbcType=VARCHAR},
+      </if>
+      <if test="requirement != null">
+        REQUIREMENT = #{requirement,jdbcType=VARCHAR},
+      </if>
+      <if test="examineStandard != null">
+        EXAMINE_STANDARD = #{examineStandard,jdbcType=VARCHAR},
+      </if>
+      <if test="score != null">
+        SCORE = #{score,jdbcType=DECIMAL},
+      </if>
+      <if test="sequence != null">
+        "SEQUENCE" = #{sequence,jdbcType=DECIMAL},
+      </if>
+      <if test="indexId != null">
+        INDEX_ID = #{indexId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="active != null">
+        ACTIVE = #{active,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDeptId != null">
+        CREATE_DEPT_ID = #{createDeptId,jdbcType=VARCHAR},
+      </if>
+      <if test="editUserId != null">
+        EDIT_USER_ID = #{editUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="editTime != null">
+        EDIT_TIME = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editDeptId != null">
+        EDIT_DEPT_ID = #{editDeptId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where INDEX_D_ID = #{indexDId,jdbcType=VARCHAR}
+  </update>
+
+  <update id="updateByPrimaryKey" parameterType="com.kcm.modules.examine.standard.entity.BizExamineIndexDetail">
+    update BIZ_EXAMINE_INDEX_DETAIL
+    set EXAMINE_CONTENT = #{examineContent,jdbcType=VARCHAR},
+      REQUIREMENT = #{requirement,jdbcType=VARCHAR},
+      EXAMINE_STANDARD = #{examineStandard,jdbcType=VARCHAR},
+      SCORE = #{score,jdbcType=DECIMAL},
+      "SEQUENCE" = #{sequence,jdbcType=DECIMAL},
+      INDEX_ID = #{indexId,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      ACTIVE = #{active,jdbcType=VARCHAR},
+      CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_DEPT_ID = #{createDeptId,jdbcType=VARCHAR},
+      EDIT_USER_ID = #{editUserId,jdbcType=VARCHAR},
+      EDIT_TIME = #{editTime,jdbcType=TIMESTAMP},
+      EDIT_DEPT_ID = #{editDeptId,jdbcType=VARCHAR}
+    where INDEX_D_ID = #{indexDId,jdbcType=VARCHAR}
+  </update>
+</mapper>

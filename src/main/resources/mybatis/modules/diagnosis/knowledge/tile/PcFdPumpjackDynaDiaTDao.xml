@@ -1,0 +1,221 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.diagnosis.knowledge.tile.dao.PcFdPumpjackDynaDiaTDao">
+  <resultMap id="BaseResultMap" type="com.kcm.modules.diagnosis.knowledge.tile.entity.PcFdPumpjackDynaDiaT">
+    <result column="DYNA_ID" jdbcType="VARCHAR" property="dynaId" />
+    <result column="WELL_COMMON_NAME" jdbcType="VARCHAR" property="wellCommonName" />
+    <result column="WELL_ID" jdbcType="VARCHAR" property="wellId" />
+    <result column="CHECK_DATE" jdbcType="TIMESTAMP" property="checkDate" />
+    <result column="DYNA_CREATE_TIME" jdbcType="TIMESTAMP" property="dynaCreateTime" />
+    <result column="STROKE" jdbcType="DECIMAL" property="stroke" />
+    <result column="FREQUENCY" jdbcType="DECIMAL" property="frequency" />
+    <result column="DYNA_POINTS" jdbcType="DECIMAL" property="dynaPoints" />
+    <result column="DISPLACEMENT" jdbcType="VARCHAR" property="displacement" />
+    <result column="DISP_LOAD" jdbcType="VARCHAR" property="dispLoad" />
+    <result column="DISP_CURRENT" jdbcType="VARCHAR" property="dispCurrent" />
+    <result column="ACTIVE_POWER" jdbcType="VARCHAR" property="activePower" />
+    <result column="REACTIVE_POWER" jdbcType="VARCHAR" property="reactivePower" />
+    <result column="POWER_FACTOR" jdbcType="VARCHAR" property="powerFactor" />
+    <result column="SUSP_MAX_LOAD" jdbcType="DECIMAL" property="suspMaxLoad" />
+    <result column="SUSP_MIN_LOAD" jdbcType="DECIMAL" property="suspMinLoad" />
+    <result column="UPGOING_MAX_CURRENT" jdbcType="DECIMAL" property="upgoingMaxCurrent" />
+    <result column="DOWNGOING_MAX_CURRENT" jdbcType="DECIMAL" property="downgoingMaxCurrent" />
+    <result column="DYNA" jdbcType="VARCHAR" property="dyna" />
+  </resultMap>
+  <resultMap id="QueryBytermVoResultMap" type="com.kcm.modules.diagnosis.knowledge.tile.vo.QueryBytermVo">
+  </resultMap>
+  <sql id="Base_Column_List">
+    DYNA_ID,WELL_ID,CHECK_DATE,DYNA_CREATE_TIME,STROKE,FREQUENCY,DYNA_POINTS,DISPLACEMENT,DISP_LOAD,DISP_CURRENT,ACTIVE_POWER,REACTIVE_POWER,POWER_FACTOR,SUSP_MAX_LOAD,SUSP_MIN_LOAD,UPGOING_MAX_CURRENT,DOWNGOING_MAX_CURRENT,DYNA
+  </sql>
+  <!--条件查询功图平铺数据-->
+  <select id="queryByterm" parameterType="com.kcm.modules.diagnosis.knowledge.tile.vo.QueryBytermVo" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from (select ROWNUM AS ROWNO, P.*
+    from PC_FD_PUMPJACK_DYNA_DIA_T P
+    where 1=1
+    <if test="oilStation != null and oilStation != ''">
+      and P.WELL_COMMON_NAME = #{oilStation,jdbcType=VARCHAR}
+    </if>
+    <if test="wellId != null and wellId != ''">
+      and P.WELL_ID = #{wellId,jdbcType=VARCHAR}
+    </if>
+    <if test="startTime != null and startTime != ''">
+      and to_char(P.DYNA_CREATE_TIME,'yyyy-MM-dd') <![CDATA[ >= ]]> #{startTime,jdbcType=VARCHAR}
+    </if>
+    <if test="endTime != null and endTime != ''">
+      and to_char(P.DYNA_CREATE_TIME,'yyyy-MM-dd') <![CDATA[ <= ]]> #{endTime,jdbcType=VARCHAR}
+    </if>
+    and ROWNUM <![CDATA[ <= ]]> #{pageSize,jdbcType=INTEGER} ORDER BY P.DYNA_CREATE_TIME ASC) TABLE_ALIAS
+    where TABLE_ALIAS.ROWNO <![CDATA[ >= ]]> #{currentPage,jdbcType=INTEGER}
+  </select>
+  <!---->
+  <select id="selectByWellIdAndTime" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select * from
+    (select ROWNUM AS ROWNO,P.DYNA_ID,P.WELL_ID,P.DYNA_CREATE_TIME,P.DISPLACEMENT,P.DISP_LOAD from PC_FD_PUMPJACK_DYNA_DIA_T P
+    where 1=1
+    AND P.WELL_ID = #{wellId,jdbcType=VARCHAR}
+    AND to_char(P.DYNA_CREATE_TIME,'yyyy-MM-dd hh24:mi:ss') = #{checkDate,jdbcType=VARCHAR}
+    AND ROWNUM <![CDATA[ <= ]]> 1) TABLE_ALIAS
+    where TABLE_ALIAS.ROWNO <![CDATA[ >= ]]> 1
+
+  </select>
+  <!--分页总条目数查询-->
+  <select id="queryCount" parameterType="com.kcm.modules.diagnosis.knowledge.tile.vo.QueryBytermVo" resultType="java.lang.Integer">
+    select count(P.DYNA_ID) as TOTAL
+    from PC_FD_PUMPJACK_DYNA_DIA_T P
+    where 1=1
+    <if test="wellId != null and wellId != ''">
+      and P.WELL_ID = #{wellId,jdbcType=VARCHAR}
+    </if>
+    <if test="startTime != null and startTime != ''">
+      and to_char(P.DYNA_CREATE_TIME,'yyyy-MM-dd') <![CDATA[ >= ]]> #{startTime,jdbcType=VARCHAR}
+    </if>
+    <if test="endTime != null and endTime != ''">
+      and to_char(P.DYNA_CREATE_TIME,'yyyy-MM-dd') <![CDATA[ <= ]]> #{endTime,jdbcType=VARCHAR}
+    </if>
+  </select>
+  <!--查询油井名称-->
+  <select id="queryWellName" resultMap="BaseResultMap">
+    select P.DYNA_ID,P.WELL_ID
+    from PC_FD_PUMPJACK_DYNA_DIA_T P
+    group by P.DYNA_ID,P.WELL_ID
+  </select>
+  <insert id="insert" parameterType="com.kcm.modules.diagnosis.knowledge.tile.entity.PcFdPumpjackDynaDiaT">
+    insert into PC_FD_PUMPJACK_DYNA_DIA_T (DYNA_ID, WELL_COMMON_NAME, WELL_ID, 
+      CHECK_DATE, DYNA_CREATE_TIME, STROKE, 
+      FREQUENCY, DYNA_POINTS, DISPLACEMENT, 
+      DISP_LOAD, DISP_CURRENT, ACTIVE_POWER, 
+      REACTIVE_POWER, POWER_FACTOR, SUSP_MAX_LOAD, 
+      SUSP_MIN_LOAD, UPGOING_MAX_CURRENT, DOWNGOING_MAX_CURRENT, 
+      DYNA)
+    values (#{dynaId,jdbcType=VARCHAR}, #{wellCommonName,jdbcType=VARCHAR}, #{wellId,jdbcType=VARCHAR}, 
+      #{checkDate,jdbcType=TIMESTAMP}, #{dynaCreateTime,jdbcType=TIMESTAMP}, #{stroke,jdbcType=DECIMAL}, 
+      #{frequency,jdbcType=DECIMAL}, #{dynaPoints,jdbcType=DECIMAL}, #{displacement,jdbcType=VARCHAR}, 
+      #{dispLoad,jdbcType=VARCHAR}, #{dispCurrent,jdbcType=VARCHAR}, #{activePower,jdbcType=VARCHAR}, 
+      #{reactivePower,jdbcType=VARCHAR}, #{powerFactor,jdbcType=VARCHAR}, #{suspMaxLoad,jdbcType=DECIMAL}, 
+      #{suspMinLoad,jdbcType=DECIMAL}, #{upgoingMaxCurrent,jdbcType=DECIMAL}, #{downgoingMaxCurrent,jdbcType=DECIMAL}, 
+      #{dyna,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kcm.modules.diagnosis.knowledge.tile.entity.PcFdPumpjackDynaDiaT">
+    insert into PC_FD_PUMPJACK_DYNA_DIA_T
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dynaId != null">
+        DYNA_ID,
+      </if>
+      <if test="wellCommonName != null">
+        WELL_COMMON_NAME,
+      </if>
+      <if test="wellId != null">
+        WELL_ID,
+      </if>
+      <if test="checkDate != null">
+        CHECK_DATE,
+      </if>
+      <if test="dynaCreateTime != null">
+        DYNA_CREATE_TIME,
+      </if>
+      <if test="stroke != null">
+        STROKE,
+      </if>
+      <if test="frequency != null">
+        FREQUENCY,
+      </if>
+      <if test="dynaPoints != null">
+        DYNA_POINTS,
+      </if>
+      <if test="displacement != null">
+        DISPLACEMENT,
+      </if>
+      <if test="dispLoad != null">
+        DISP_LOAD,
+      </if>
+      <if test="dispCurrent != null">
+        DISP_CURRENT,
+      </if>
+      <if test="activePower != null">
+        ACTIVE_POWER,
+      </if>
+      <if test="reactivePower != null">
+        REACTIVE_POWER,
+      </if>
+      <if test="powerFactor != null">
+        POWER_FACTOR,
+      </if>
+      <if test="suspMaxLoad != null">
+        SUSP_MAX_LOAD,
+      </if>
+      <if test="suspMinLoad != null">
+        SUSP_MIN_LOAD,
+      </if>
+      <if test="upgoingMaxCurrent != null">
+        UPGOING_MAX_CURRENT,
+      </if>
+      <if test="downgoingMaxCurrent != null">
+        DOWNGOING_MAX_CURRENT,
+      </if>
+      <if test="dyna != null">
+        DYNA,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dynaId != null">
+        #{dynaId,jdbcType=VARCHAR},
+      </if>
+      <if test="wellCommonName != null">
+        #{wellCommonName,jdbcType=VARCHAR},
+      </if>
+      <if test="wellId != null">
+        #{wellId,jdbcType=VARCHAR},
+      </if>
+      <if test="checkDate != null">
+        #{checkDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="dynaCreateTime != null">
+        #{dynaCreateTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="stroke != null">
+        #{stroke,jdbcType=DECIMAL},
+      </if>
+      <if test="frequency != null">
+        #{frequency,jdbcType=DECIMAL},
+      </if>
+      <if test="dynaPoints != null">
+        #{dynaPoints,jdbcType=DECIMAL},
+      </if>
+      <if test="displacement != null">
+        #{displacement,jdbcType=VARCHAR},
+      </if>
+      <if test="dispLoad != null">
+        #{dispLoad,jdbcType=VARCHAR},
+      </if>
+      <if test="dispCurrent != null">
+        #{dispCurrent,jdbcType=VARCHAR},
+      </if>
+      <if test="activePower != null">
+        #{activePower,jdbcType=VARCHAR},
+      </if>
+      <if test="reactivePower != null">
+        #{reactivePower,jdbcType=VARCHAR},
+      </if>
+      <if test="powerFactor != null">
+        #{powerFactor,jdbcType=VARCHAR},
+      </if>
+      <if test="suspMaxLoad != null">
+        #{suspMaxLoad,jdbcType=DECIMAL},
+      </if>
+      <if test="suspMinLoad != null">
+        #{suspMinLoad,jdbcType=DECIMAL},
+      </if>
+      <if test="upgoingMaxCurrent != null">
+        #{upgoingMaxCurrent,jdbcType=DECIMAL},
+      </if>
+      <if test="downgoingMaxCurrent != null">
+        #{downgoingMaxCurrent,jdbcType=DECIMAL},
+      </if>
+      <if test="dyna != null">
+        #{dyna,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

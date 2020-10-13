@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.system.user.dao.SysUserDao">
+    <cache/>
+
+    <resultMap id="BaseResultMap" type="com.kcm.modules.system.user.entity.SysUser">
+        <id property="userId" column="user_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="departmentId" column="department_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="loginName" column="login_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="userName" column="user_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="password" column="password" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="email" column="email" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="phone" column="phone" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="sex" column="sex" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="positionId" column="position_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="avatar" column="avatar" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="openId" column="open_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="userNum" column="user_num" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="loginIp" column="login_ip" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="loginDate" column="login_date" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="sequence" column="sequence" javaType="java.lang.Integer" jdbcType="NUMERIC"/>
+        <result property="defaultPassword" column="default_Password" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="salt" column="salt" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="status" column="status" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="active" column="active" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="createUserId" column="create_user_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="createDeptId" column="create_dept_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="editUserId" column="edit_user_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="editTime" column="edit_time" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="editDeptId" column="edit_dept_id" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--  SysUserVO  -->
+    <resultMap id="SysUserVOResultMap" type="com.kcm.modules.system.user.vo.SysUserVO" extends="BaseResultMap">
+        <result property="departmentName" column="department_name" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="RefColumns">
+        u.user_id, u.department_id, u.login_name, u.user_name, u.password, u.email, u.phone,
+        u.position_id, u.avatar, u.open_id, u.user_num, u.login_ip, u.login_date, u.sequence, u.default_Password, u.salt,
+        u.remark, u.create_user_id, u.create_time, u.create_dept_id, u.edit_user_id, u.edit_time, u.edit_dept_id,
+        case u.sex when '0' then '男' when '1' then '女' else '未知' end sex,
+        case u.status when '0' then '停用' when '1' then '正常' end status,
+        case u.active when '0' then '无效' when '1' then '有效' end active
+
+    </sql>
+
+    <!--根据登录名称查询用户信息-->
+    <select id="queryByLoginName" parameterType="string" resultMap="SysUserVOResultMap">
+        select
+        d.DEPARTMENT_NAME,
+        <include refid="RefColumns" />
+        from DEMO.SYS_USER u
+        left join SYS_DEPARTMENT d
+        on u.DEPARTMENT_ID = d.DEPARTMENT_ID
+        where u.ACTIVE = '1'
+        and u.LOGIN_NAME = #{loginName}
+    </select>
+
+    <!--根据部门ID集合分页查询用户列表（使用exists代替in）-->
+    <select id="queryByDeptId" resultMap="SysUserVOResultMap">
+        select
+        d.DEPARTMENT_NAME,
+        <include refid="RefColumns" />
+        from SYS_USER u
+        left join SYS_DEPARTMENT d
+        on u.DEPARTMENT_ID = d.DEPARTMENT_ID
+        where u.ACTIVE = '1'
+        and exists(select *
+        from
+        <foreach collection="deptIds" item="item" index="index" separator="union" open="(" close=")">
+            select #{item} as id from dual
+        </foreach>
+        tmp where tmp.id = u.DEPARTMENT_ID)
+        order by u.sequence
+    </select>
+
+    <select id="queryAll" resultMap="SysUserVOResultMap">
+        select
+        d.DEPARTMENT_NAME,
+        <include refid="RefColumns" />
+        from SYS_USER u
+        left join SYS_DEPARTMENT d
+        on u.DEPARTMENT_ID = d.DEPARTMENT_ID
+        where u.ACTIVE = '1'
+        order by u.sequence
+    </select>
+
+    <!--根据ID查询用户信息-->
+    <select id="selectById" resultMap="BaseResultMap">
+        select
+        <include refid="RefColumns" />
+        from SYS_USER u
+        where u.USER_ID = #{userId}
+    </select>
+
+</mapper>

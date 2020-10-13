@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.diagnosis.oilwell.liquidvolume.dao.LiquidVolumeAbnormalDao">
+    <cache/>
+
+    <resultMap id="BaseResultMap" type="com.kcm.modules.diagnosis.oilwell.liquidvolume.entity.LiquidVolumeAbnormal">
+        <id property="primaryId" column="PRIMARY_ID" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="wellId" column="WELL_ID" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="wellName" column="WELL_NAME" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="prodDate" column="PROD_DATE" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="prodTime" column="PROD_TIME" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result property="abnormalProblem" column="ABNORMAL_PROBLEM" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="liqProdDaily" column="LIQ_PROD_DAILY" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result property="oilProdDaily" column="OIL_PROD_DAILY" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result property="waterProdDaily" column="WATER_PROD_DAILY" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result property="gasProdDaily" column="GAS_PROD_DAILY" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result property="waterCut" column="WATER_CUT" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result property="saltCut" column="SALT_CUT" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result property="remarks" column="REMARKS" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="normalLiqProdDaily" column="NORMAL_LIQ_PROD_DAILY" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result property="normalWaterCut" column="NORMAL_WATER_CUT" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result property="normalSaltCut" column="NORMAL_SALT_CUT" javaType="java.lang.Double" jdbcType="DOUBLE"/>
+        <result property="artificialConfirmResult" column="ARTIFICIAL_CONFIRM_RESULT" javaType="java.lang.String" jdbcType="VARCHAR"/>
+        <result property="confirmDatetime" column="CONFIRM_DATETIME" javaType="java.util.Date" jdbcType="TIMESTAMP"/>
+        <result property="confirmPerson" column="CONFIRM_PERSON" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--  LiquidVolumeAbnormalVO  -->
+    <resultMap id="LiquidVolumeAbnormalVOResultMap" type="com.kcm.modules.diagnosis.oilwell.liquidvolume.vo.LiquidVolumeAbnormalVO" extends="BaseResultMap">
+        <result property="orgName" column="ORG_NAME" javaType="java.lang.String" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="RefColumns">
+        l.PRIMARY_ID, l.WELL_ID, l.WELL_NAME, l.PROD_DATE, l.PROD_TIME, l.ABNORMAL_PROBLEM, l.LIQ_PROD_DAILY, l.OIL_PROD_DAILY, l.WATER_PROD_DAILY, l.GAS_PROD_DAILY,
+        l.WATER_CUT, l.SALT_CUT, l.REMARKS, l.NORMAL_LIQ_PROD_DAILY, l.NORMAL_WATER_CUT, l.NORMAL_SALT_CUT, l.ARTIFICIAL_CONFIRM_RESULT, l.CONFIRM_DATETIME, l.CONFIRM_PERSON
+    </sql>
+
+    <!--  分页查询液量异常汇总信息  -->
+    <select id="queryByPage" resultMap="LiquidVolumeAbnormalVOResultMap">
+        select
+        d.ORG_NAME,
+        <include refid="RefColumns" />
+        from ABNORMAL_PRO_WELL l
+        left join CD_WELL_SOURCE d
+        on l.WELL_ID = d.WELL_ID
+        and l.WELL_NAME = d.WELL_NAME
+        order by l.PROD_DATE
+    </select>
+
+    <!--  根据采油站、日期等条件查询液量异常汇总信息  -->
+    <select id="queryByOrgName" resultMap="LiquidVolumeAbnormalVOResultMap">
+        select
+        d.ORG_NAME,
+        <include refid="RefColumns" />
+        from ABNORMAL_PRO_WELL l
+        left join CD_WELL_SOURCE d
+        on l.WELL_ID = d.WELL_ID
+        and l.WELL_NAME = d.WELL_NAME
+        <where>
+            <if test="date != null">
+                and l.PROD_DATE = #{date, jdbcType=TIMESTAMP}
+            </if>
+            <if test="orgName != null">
+                and d.ORG_NAME = #{orgName, jdbcType=VARCHAR}
+            </if>
+        </where>
+        order by l.PROD_DATE
+    </select>
+
+    <!--  查询所有采油站名  -->
+    <select id="queryOrgNames" resultType="string">
+        select distinct ORG_NAME from CD_WELL_SOURCE
+    </select>
+
+</mapper>

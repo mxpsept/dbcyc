@@ -1,0 +1,288 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.diagnosis.knowledge.diagnosticparametersgt.dao.CdWellSourceDao">
+  <resultMap id="BaseResultMap" type="com.kcm.modules.diagnosis.knowledge.diagnosticparametersgt.entity.CdWellSource">
+    <result column="WELL_ID" jdbcType="VARCHAR" property="wellId" />
+    <result column="WELL_NAME" jdbcType="VARCHAR" property="wellName" />
+    <result column="PROJECT_ID" jdbcType="VARCHAR" property="projectId" />
+    <result column="PROJECT_NAME" jdbcType="VARCHAR" property="projectName" />
+    <result column="WELLZONE_ID" jdbcType="VARCHAR" property="wellzoneId" />
+    <result column="WELLZONE_NAME" jdbcType="VARCHAR" property="wellzoneName" />
+    <result column="STATION_ID" jdbcType="VARCHAR" property="stationId" />
+    <result column="STATION_NAME" jdbcType="VARCHAR" property="stationName" />
+    <result column="WELL_GROUP_ID" jdbcType="VARCHAR" property="wellGroupId" />
+    <result column="WELL_GROUP_NAME" jdbcType="VARCHAR" property="wellGroupName" />
+    <result column="WELL_PURPOSE_CODE" jdbcType="VARCHAR" property="wellPurposeCode" />
+    <result column="WELL_PURPOSE_NAME" jdbcType="VARCHAR" property="wellPurposeName" />
+    <result column="WELL_REASON_CODE" jdbcType="VARCHAR" property="wellReasonCode" />
+    <result column="WELL_REASON_NAME" jdbcType="VARCHAR" property="wellReasonName" />
+    <result column="DESIGN_DEPTH" jdbcType="DECIMAL" property="designDepth" />
+    <result column="GEO_DESCRIPTION" jdbcType="VARCHAR" property="geoDescription" />
+    <result column="STRUCT_DESCRIPTION" jdbcType="VARCHAR" property="structDescription" />
+    <result column="GEO_OFFSET_EAST" jdbcType="DECIMAL" property="geoOffsetEast" />
+    <result column="GEO_OFFSET_NORTH" jdbcType="DECIMAL" property="geoOffsetNorth" />
+    <result column="BOTTOM_DISPLACEMENT" jdbcType="DECIMAL" property="bottomDisplacement" />
+    <result column="P_COMPLETION_MODE" jdbcType="VARCHAR" property="pCompletionMode" />
+    <result column="P_COMPLETION_DATE" jdbcType="TIMESTAMP" property="pCompletionDate" />
+    <result column="PROD_DATE" jdbcType="TIMESTAMP" property="prodDate" />
+    <result column="WATER_INJECTION_CODE" jdbcType="VARCHAR" property="waterInjectionCode" />
+    <result column="WATER_INJECTION_NAME" jdbcType="VARCHAR" property="waterInjectionName" />
+    <result column="ELEVATION" jdbcType="DECIMAL" property="elevation" />
+    <result column="KB_ELEVATION" jdbcType="DECIMAL" property="kbElevation" />
+    <result column="MAKE_INCLINED_POINT" jdbcType="DECIMAL" property="makeInclinedPoint" />
+    <result column="PROD_ZONE_CODE" jdbcType="VARCHAR" property="prodZoneCode" />
+    <result column="ORG_ID" jdbcType="VARCHAR" property="orgId" />
+    <result column="ORG_NAME" jdbcType="VARCHAR" property="orgName" />
+    <result column="STATUS" jdbcType="DECIMAL" property="status" />
+    <result column="WELL_TYPE" jdbcType="DECIMAL" property="wellType" />
+  </resultMap>
+  <insert id="insert" parameterType="com.kcm.modules.diagnosis.knowledge.diagnosticparametersgt.entity.CdWellSource">
+    insert into CD_WELL_SOURCE (WELL_ID, WELL_NAME, PROJECT_ID, 
+      PROJECT_NAME, WELLZONE_ID, WELLZONE_NAME, 
+      STATION_ID, STATION_NAME, WELL_GROUP_ID, 
+      WELL_GROUP_NAME, WELL_PURPOSE_CODE, WELL_PURPOSE_NAME, 
+      WELL_REASON_CODE, WELL_REASON_NAME, DESIGN_DEPTH, 
+      GEO_DESCRIPTION, STRUCT_DESCRIPTION, GEO_OFFSET_EAST, 
+      GEO_OFFSET_NORTH, BOTTOM_DISPLACEMENT, P_COMPLETION_MODE, 
+      P_COMPLETION_DATE, PROD_DATE, WATER_INJECTION_CODE, 
+      WATER_INJECTION_NAME, ELEVATION, KB_ELEVATION, 
+      MAKE_INCLINED_POINT, PROD_ZONE_CODE, ORG_ID, 
+      ORG_NAME, "STATUS", WELL_TYPE
+      )
+    values (#{wellId,jdbcType=VARCHAR}, #{wellName,jdbcType=VARCHAR}, #{projectId,jdbcType=VARCHAR}, 
+      #{projectName,jdbcType=VARCHAR}, #{wellzoneId,jdbcType=VARCHAR}, #{wellzoneName,jdbcType=VARCHAR}, 
+      #{stationId,jdbcType=VARCHAR}, #{stationName,jdbcType=VARCHAR}, #{wellGroupId,jdbcType=VARCHAR}, 
+      #{wellGroupName,jdbcType=VARCHAR}, #{wellPurposeCode,jdbcType=VARCHAR}, #{wellPurposeName,jdbcType=VARCHAR}, 
+      #{wellReasonCode,jdbcType=VARCHAR}, #{wellReasonName,jdbcType=VARCHAR}, #{designDepth,jdbcType=DECIMAL}, 
+      #{geoDescription,jdbcType=VARCHAR}, #{structDescription,jdbcType=VARCHAR}, #{geoOffsetEast,jdbcType=DECIMAL}, 
+      #{geoOffsetNorth,jdbcType=DECIMAL}, #{bottomDisplacement,jdbcType=DECIMAL}, #{pCompletionMode,jdbcType=VARCHAR}, 
+      #{pCompletionDate,jdbcType=TIMESTAMP}, #{prodDate,jdbcType=TIMESTAMP}, #{waterInjectionCode,jdbcType=VARCHAR}, 
+      #{waterInjectionName,jdbcType=VARCHAR}, #{elevation,jdbcType=DECIMAL}, #{kbElevation,jdbcType=DECIMAL}, 
+      #{makeInclinedPoint,jdbcType=DECIMAL}, #{prodZoneCode,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, 
+      #{orgName,jdbcType=VARCHAR}, #{status,jdbcType=DECIMAL}, #{wellType,jdbcType=DECIMAL}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.kcm.modules.diagnosis.knowledge.diagnosticparametersgt.entity.CdWellSource">
+    insert into CD_WELL_SOURCE
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="wellId != null">
+        WELL_ID,
+      </if>
+      <if test="wellName != null">
+        WELL_NAME,
+      </if>
+      <if test="projectId != null">
+        PROJECT_ID,
+      </if>
+      <if test="projectName != null">
+        PROJECT_NAME,
+      </if>
+      <if test="wellzoneId != null">
+        WELLZONE_ID,
+      </if>
+      <if test="wellzoneName != null">
+        WELLZONE_NAME,
+      </if>
+      <if test="stationId != null">
+        STATION_ID,
+      </if>
+      <if test="stationName != null">
+        STATION_NAME,
+      </if>
+      <if test="wellGroupId != null">
+        WELL_GROUP_ID,
+      </if>
+      <if test="wellGroupName != null">
+        WELL_GROUP_NAME,
+      </if>
+      <if test="wellPurposeCode != null">
+        WELL_PURPOSE_CODE,
+      </if>
+      <if test="wellPurposeName != null">
+        WELL_PURPOSE_NAME,
+      </if>
+      <if test="wellReasonCode != null">
+        WELL_REASON_CODE,
+      </if>
+      <if test="wellReasonName != null">
+        WELL_REASON_NAME,
+      </if>
+      <if test="designDepth != null">
+        DESIGN_DEPTH,
+      </if>
+      <if test="geoDescription != null">
+        GEO_DESCRIPTION,
+      </if>
+      <if test="structDescription != null">
+        STRUCT_DESCRIPTION,
+      </if>
+      <if test="geoOffsetEast != null">
+        GEO_OFFSET_EAST,
+      </if>
+      <if test="geoOffsetNorth != null">
+        GEO_OFFSET_NORTH,
+      </if>
+      <if test="bottomDisplacement != null">
+        BOTTOM_DISPLACEMENT,
+      </if>
+      <if test="pCompletionMode != null">
+        P_COMPLETION_MODE,
+      </if>
+      <if test="pCompletionDate != null">
+        P_COMPLETION_DATE,
+      </if>
+      <if test="prodDate != null">
+        PROD_DATE,
+      </if>
+      <if test="waterInjectionCode != null">
+        WATER_INJECTION_CODE,
+      </if>
+      <if test="waterInjectionName != null">
+        WATER_INJECTION_NAME,
+      </if>
+      <if test="elevation != null">
+        ELEVATION,
+      </if>
+      <if test="kbElevation != null">
+        KB_ELEVATION,
+      </if>
+      <if test="makeInclinedPoint != null">
+        MAKE_INCLINED_POINT,
+      </if>
+      <if test="prodZoneCode != null">
+        PROD_ZONE_CODE,
+      </if>
+      <if test="orgId != null">
+        ORG_ID,
+      </if>
+      <if test="orgName != null">
+        ORG_NAME,
+      </if>
+      <if test="status != null">
+        "STATUS",
+      </if>
+      <if test="wellType != null">
+        WELL_TYPE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="wellId != null">
+        #{wellId,jdbcType=VARCHAR},
+      </if>
+      <if test="wellName != null">
+        #{wellName,jdbcType=VARCHAR},
+      </if>
+      <if test="projectId != null">
+        #{projectId,jdbcType=VARCHAR},
+      </if>
+      <if test="projectName != null">
+        #{projectName,jdbcType=VARCHAR},
+      </if>
+      <if test="wellzoneId != null">
+        #{wellzoneId,jdbcType=VARCHAR},
+      </if>
+      <if test="wellzoneName != null">
+        #{wellzoneName,jdbcType=VARCHAR},
+      </if>
+      <if test="stationId != null">
+        #{stationId,jdbcType=VARCHAR},
+      </if>
+      <if test="stationName != null">
+        #{stationName,jdbcType=VARCHAR},
+      </if>
+      <if test="wellGroupId != null">
+        #{wellGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="wellGroupName != null">
+        #{wellGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="wellPurposeCode != null">
+        #{wellPurposeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="wellPurposeName != null">
+        #{wellPurposeName,jdbcType=VARCHAR},
+      </if>
+      <if test="wellReasonCode != null">
+        #{wellReasonCode,jdbcType=VARCHAR},
+      </if>
+      <if test="wellReasonName != null">
+        #{wellReasonName,jdbcType=VARCHAR},
+      </if>
+      <if test="designDepth != null">
+        #{designDepth,jdbcType=DECIMAL},
+      </if>
+      <if test="geoDescription != null">
+        #{geoDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="structDescription != null">
+        #{structDescription,jdbcType=VARCHAR},
+      </if>
+      <if test="geoOffsetEast != null">
+        #{geoOffsetEast,jdbcType=DECIMAL},
+      </if>
+      <if test="geoOffsetNorth != null">
+        #{geoOffsetNorth,jdbcType=DECIMAL},
+      </if>
+      <if test="bottomDisplacement != null">
+        #{bottomDisplacement,jdbcType=DECIMAL},
+      </if>
+      <if test="pCompletionMode != null">
+        #{pCompletionMode,jdbcType=VARCHAR},
+      </if>
+      <if test="pCompletionDate != null">
+        #{pCompletionDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prodDate != null">
+        #{prodDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="waterInjectionCode != null">
+        #{waterInjectionCode,jdbcType=VARCHAR},
+      </if>
+      <if test="waterInjectionName != null">
+        #{waterInjectionName,jdbcType=VARCHAR},
+      </if>
+      <if test="elevation != null">
+        #{elevation,jdbcType=DECIMAL},
+      </if>
+      <if test="kbElevation != null">
+        #{kbElevation,jdbcType=DECIMAL},
+      </if>
+      <if test="makeInclinedPoint != null">
+        #{makeInclinedPoint,jdbcType=DECIMAL},
+      </if>
+      <if test="prodZoneCode != null">
+        #{prodZoneCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null">
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null">
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null">
+        #{status,jdbcType=DECIMAL},
+      </if>
+      <if test="wellType != null">
+        #{wellType,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectOrgNameList" resultMap="BaseResultMap">
+    SELECT DISTINCT ORG_NAME,ORG_ID FROM CD_WELL_SOURCE
+  </select>
+  <select id="queryorgName" resultMap="BaseResultMap">
+    SELECT
+    DISTINCT A.ORG_NAME
+    FROM CD_WELL_SOURCE A,DGNS_RESULT B
+    WHERE A.WELL_NAME=B.WELL_COMMON_NAME
+  </select>
+  <select id="queryWellNameByOrgName" parameterType="java.lang.String" resultMap="BaseResultMap">
+     select A.WELL_NAME
+     from CD_WELL_SOURCE A
+     WHERE 1=1
+     <if test="orgName != null and orgName != ''">
+       and A.ORG_NAME = #{orgName,jdbcType=VARCHAR}
+     </if>
+  </select>
+</mapper>

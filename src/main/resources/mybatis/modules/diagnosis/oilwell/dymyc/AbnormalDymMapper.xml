@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.diagnosis.oilwell.dymyc.dao.AbnormalDymDao">
+    <!--<resultMap id="BaseResultMap" type="com.kcm.modules.examine.standard.entity.BizExamineIndexInfor">-->
+        <!--<id column="INDEX_ID" jdbcType="VARCHAR" property="indexId"/>-->
+        <!--<result column="INDEX_NAME" jdbcType="VARCHAR" property="indexName"/>-->
+        <!--<result column="INDEX_P_ID" jdbcType="VARCHAR" property="indexPId"/>-->
+        <!--<result column="SCORE_WEIGHT" jdbcType="TIMESTAMP" property="scoreWeight"/>-->
+        <!--<result column="SEQUENCE" jdbcType="DECIMAL" property="sequence"/>-->
+        <!--<result column="EXAMINE_T_ID" jdbcType="VARCHAR" property="examineTId"/>-->
+        <!--<result column="REMARK" jdbcType="VARCHAR" property="remark"/>-->
+        <!--<result column="ACTIVE" jdbcType="VARCHAR" property="active"/>-->
+        <!--<result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId"/>-->
+        <!--<result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>-->
+        <!--<result column="CREATE_DEPT_ID" jdbcType="VARCHAR" property="createDeptId"/>-->
+        <!--<result column="EDIT_USER_ID" jdbcType="VARCHAR" property="editUserId"/>-->
+        <!--<result column="EDIT_TIME" jdbcType="TIMESTAMP" property="editTime"/>-->
+        <!--<result column="EDIT_DEPT_ID" jdbcType="VARCHAR" property="editDeptId"/>-->
+    <!--</resultMap>-->
+    <sql id="Base_Column_List">
+
+    </sql>
+
+    <!--查询动液面数据列表(分页插件查询)-->
+    <select id="queryByPageAll"  resultType="com.kcm.modules.diagnosis.oilwell.dymyc.vo.AbnormalDymVo">
+        SELECT a.*,b.ORG_NAME FROM ABNORMAL_DYM a,CD_WELL_SOURCE b  WHERE  a.WELL_ID = b.WELL_NAME
+    </select>
+
+    <!-- 根据采油站名称和指定时间查询 -->
+    <select id="selectByTimeAndOrg" resultType="com.kcm.modules.diagnosis.oilwell.dymyc.vo.AbnormalDymVo">
+        SELECT a.*,b.ORG_NAME from ABNORMAL_DYM a, CD_WELL_SOURCE b
+        <where>
+            a.WELL_ID = b.WELL_NAME
+            <if test="wellId!=null and wellId!=''">
+                AND a.WELL_ID = #{wellId,jdbcType=VARCHAR}
+            </if>
+            <if test="checkTime!=null and checkTime!=''">
+                AND a.PROD_DATE  = to_date(#{checkTime},'yyyy-MM-dd')
+            </if>
+        </where>
+    </select>
+</mapper>

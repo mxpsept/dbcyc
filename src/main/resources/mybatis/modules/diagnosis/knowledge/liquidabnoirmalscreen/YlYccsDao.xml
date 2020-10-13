@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.dao.YlYccsDao">
+  <resultMap id="BaseResultMap" type="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.entity.YlYccs">
+    <id column="WELL_NAME" jdbcType="VARCHAR" property="wellName" />
+    <result column="CS1" jdbcType="DECIMAL" property="cs1" />
+    <result column="CS2" jdbcType="DECIMAL" property="cs2" />
+    <result column="CS3" jdbcType="DECIMAL" property="cs3" />
+    <result column="CS4" jdbcType="DECIMAL" property="cs4" />
+    <result column="CS5" jdbcType="DECIMAL" property="cs5" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    WELL_NAME, CS1, CS2, CS3, CS4, CS5
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from YL_YCCS
+    where WELL_NAME = #{wellName,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from YL_YCCS
+    where WELL_NAME = #{wellName,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" keyColumn="WELL_NAME" keyProperty="wellName" parameterType="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.entity.YlYccs" useGeneratedKeys="true">
+    insert into YL_YCCS (CS1, CS2, CS3, 
+      CS4, CS5)
+    values (#{cs1,jdbcType=DECIMAL}, #{cs2,jdbcType=DECIMAL}, #{cs3,jdbcType=DECIMAL}, 
+      #{cs4,jdbcType=DECIMAL}, #{cs5,jdbcType=DECIMAL})
+  </insert>
+  <insert id="insertSelective" keyColumn="WELL_NAME" keyProperty="wellName" parameterType="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.entity.YlYccs" useGeneratedKeys="true">
+    insert into YL_YCCS
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cs1 != null">
+        CS1,
+      </if>
+      <if test="cs2 != null">
+        CS2,
+      </if>
+      <if test="cs3 != null">
+        CS3,
+      </if>
+      <if test="cs4 != null">
+        CS4,
+      </if>
+      <if test="cs5 != null">
+        CS5,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cs1 != null">
+        #{cs1,jdbcType=DECIMAL},
+      </if>
+      <if test="cs2 != null">
+        #{cs2,jdbcType=DECIMAL},
+      </if>
+      <if test="cs3 != null">
+        #{cs3,jdbcType=DECIMAL},
+      </if>
+      <if test="cs4 != null">
+        #{cs4,jdbcType=DECIMAL},
+      </if>
+      <if test="cs5 != null">
+        #{cs5,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.entity.YlYccs">
+    update YL_YCCS
+    <set>
+      <if test="cs1 != null">
+        CS1 = #{cs1,jdbcType=DECIMAL},
+      </if>
+      <if test="cs2 != null">
+        CS2 = #{cs2,jdbcType=DECIMAL},
+      </if>
+      <if test="cs3 != null">
+        CS3 = #{cs3,jdbcType=DECIMAL},
+      </if>
+      <if test="cs4 != null">
+        CS4 = #{cs4,jdbcType=DECIMAL},
+      </if>
+      <if test="cs5 != null">
+        CS5 = #{cs5,jdbcType=DECIMAL},
+      </if>
+    </set>
+    where WELL_NAME = #{wellName,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.entity.YlYccs">
+    update YL_YCCS
+    set CS1 = #{cs1,jdbcType=DECIMAL},
+      CS2 = #{cs2,jdbcType=DECIMAL},
+      CS3 = #{cs3,jdbcType=DECIMAL},
+      CS4 = #{cs4,jdbcType=DECIMAL},
+      CS5 = #{cs5,jdbcType=DECIMAL}
+    where WELL_NAME = #{wellName,jdbcType=VARCHAR}
+  </update>
+
+  <select id="selectByWellName" parameterType="java.lang.String" resultType="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.entity.YlYccs">
+    select a.* from YL_YCCS a where a.WELL_NAME=#{wellName,jdbcType=VARCHAR}
+  </select>
+</mapper>

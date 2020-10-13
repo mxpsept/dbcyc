@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.kcm.modules.system.code.dao.SysCodeMapper">
+    <cache/>
+    <resultMap id="codeMap" type="com.kcm.modules.system.code.entity.SysTCodeInfor">
+        <id column="CODE_ID" property="codeId" jdbcType="VARCHAR"/>
+        <result column="CODE_T_ID" property="codeTId" jdbcType="VARCHAR"/>
+        <result column="CODE_NAME" property="codeName" jdbcType="VARCHAR"/>
+        <result column="CODE_VALUE" property="codeValue" jdbcType="VARCHAR"/>
+        <result column="VALUE_TYPE" property="valueType" jdbcType="VARCHAR"/>
+        <result column="CODE_NUM" property="codeNum" jdbcType="VARCHAR"/>
+        <result column="SEQUENCE" property="sequence" jdbcType="DECIMAL"/>
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR"/>
+        <result column="CODE_P_ID" property="codePId" jdbcType="VARCHAR"/>
+        <result column="ACTIVE" property="active" jdbcType="VARCHAR"/>
+        <result column="CREATE_USER_ID" property="createUserId" jdbcType="VARCHAR"/>
+        <result column="CREATE_TIME" property="createTime" jdbcType="TIMESTAMP"/>
+        <result column="CREATE_DEPT_ID" property="createDeptId" jdbcType="VARCHAR"/>
+        <result column="EDIT_USER_ID" property="editUserId" jdbcType="VARCHAR"/>
+        <result column="EDIT_TIME" property="editTime" jdbcType="TIMESTAMP"/>
+        <result column="EDIT_DEPT_ID" property="editDeptId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="codeList">
+        CODE_ID,
+        CODE_T_ID,
+        CODE_NAME,
+        CODE_VALUE,
+        VALUE_TYPE,
+        CODE_NUM,
+        SEQUENCE,
+        DESCRIPTION,
+        CODE_P_ID,
+        ACTIVE,
+        CREATE_USER_ID,
+        CREATE_TIME,
+        CREATE_DEPT_ID,
+        EDIT_USER_ID,
+        EDIT_TIME,
+        EDIT_DEPT_ID
+    </sql>
+
+    <!--新增一条编码详细信息数据-->
+    <insert id="insert" parameterType="com.kcm.modules.system.code.entity.SysTCodeInfor">
+        insert into SYS_T_CODE_INFOR(CODE_ID,CODE_T_ID,CODE_NAME,CODE_VALUE,VALUE_TYPE,
+                                     CODE_NUM,SEQUENCE,DESCRIPTION,CODE_P_ID,ACTIVE,
+                                     CREATE_USER_ID,CREATE_TIME,CREATE_DEPT_ID,
+                                     EDIT_USER_ID,EDIT_TIME,EDIT_DEPT_ID)
+        VALUES (#{codeId,jdbcType=VARCHAR},#{codeTId,jdbcType=VARCHAR},
+                #{codeName,jdbcType=VARCHAR},#{codeValue,jdbcType=VARCHAR},
+                #{valueType,jdbcType=VARCHAR},#{codeNum,jdbcType=VARCHAR},
+                #{sequence,jdbcType=DECIMAL},#{description,jdbcType=VARCHAR},
+                #{codePId,jdbcType=VARCHAR},#{active,jdbcType=VARCHAR},
+                #{createUserId,jdbcType=VARCHAR},#{createTime,jdbcType=TIMESTAMP},
+                #{createDeptId,jdbcType=VARCHAR},#{editUserId,jdbcType=VARCHAR},
+                #{editTime,jdbcType=TIMESTAMP},#{editDeptId,jdbcType=VARCHAR})
+    </insert>
+
+    <!--通过主键修改一条编码详细信息-->
+    <update id="updateByPrimary" parameterType="com.kcm.modules.system.code.entity.SysTCodeInfor">
+        update SYS_T_CODE_INFOR
+        set
+            CODE_ID=#{codeId,jdbcType=VARCHAR},
+            CODE_T_ID=#{codeTId,jdbcType=VARCHAR},
+            CODE_NAME=#{codeName,jdbcType=VARCHAR},
+            CODE_VALUE=#{codeValue,jdbcType=VARCHAR},
+            VALUE_TYPE=#{valueType,jdbcType=VARCHAR},
+            CODE_NUM=#{codeNum,jdbcType=VARCHAR},
+            SEQUENCE=#{sequence,jdbcType=DECIMAL},
+            DESCRIPTION=#{description,jdbcType=VARCHAR},
+            CODE_P_ID=#{codePId,jdbcType=VARCHAR},
+            ACTIVE=#{active,jdbcType=VARCHAR},
+            CREATE_USER_ID=#{createUserId,jdbcType=VARCHAR},
+            CREATE_TIME=#{createTime,jdbcType=TIMESTAMP},
+            CREATE_DEPT_ID=#{createDeptId,jdbcType=VARCHAR},
+            EDIT_USER_ID=#{editUserId,jdbcType=VARCHAR},
+            EDIT_TIME=#{editTime,jdbcType=TIMESTAMP},
+            EDIT_DEPT_ID=#{editDeptId,jdbcType=VARCHAR}
+        where CODE_ID=#{codeId,jdbcType=VARCHAR}
+    </update>
+
+    <!--通过主键查询编码详细信息-->
+    <select id="selectByPrimary" resultMap="codeMap" parameterType="java.lang.String">
+        select
+        <include refid="codeList"/>
+        from SYS_T_CODE_INFOR
+        where CODE_ID=#{codeId,jdbcType=VARCHAR} AND ACTIVE = '1'
+    </select>
+
+    <!--通过名称查询编码详细信息-->
+    <select id="selectByCodeName" resultMap="codeMap" parameterType="java.lang.String">
+        select
+        <include refid="codeList"/>
+        from SYS_T_CODE_INFOR
+        where CODE_NAME=#{codeName,jdbcType=VARCHAR} AND ACTIVE = '1'
+    </select>
+
+    <!--通过编码类型表中编码名称查询编码详细信息-->
+    <select id="selectBycodeTName" parameterType="java.lang.String" resultMap="codeMap">
+        SELECT
+               a.CODE_ID,
+               a.CODE_T_ID,
+               a.CODE_NAME,
+               a.CODE_VALUE,
+               a.VALUE_TYPE,
+               a.CODE_NUM,
+               a.SEQUENCE,
+               a.DESCRIPTION,
+               a.CODE_P_ID,
+               a.ACTIVE,
+               a.CREATE_USER_ID,
+               a.CREATE_TIME,
+               a.CREATE_DEPT_ID,
+               a.EDIT_USER_ID,
+               a.EDIT_TIME,
+               a.EDIT_DEPT_ID
+        FROM SYS_T_CODE_INFOR a
+        INNER JOIN SYS_T_CODE_TYPE_INFOR b
+        ON a.CODE_T_ID=b.CODE_T_ID
+        WHERE b.CODE_T_NAME=#{codeTName,jdbcType=VARCHAR} and b.ACTIVE ='1' AND a.ACTIVE='1'
+        ORDER BY CODE_ID
+    </select>
+
+    <!--查询所有编码信息-->
+    <select id="selectAll"  resultMap="codeMap">
+        select
+        <include refid="codeList"/>
+        from SYS_T_CODE_INFOR
+        where ACTIVE='1'
+        ORDER BY SEQUENCE
+    </select>
+
+    <!--通过主键删除(假删除)-->
+    <update id="deleteByPrimary" parameterType="java.lang.String">
+        update SYS_T_CODE_INFOR
+        <set>
+            ACTIVE = '0'
+        </set>
+        WHERE CODE_ID=#{codeId,jdbcType=VARCHAR}
+    </update>
+</mapper>

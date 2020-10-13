@@ -1,0 +1,86 @@
+# 系统配置
+server:
+  servlet:
+    context-path: /demo
+  port: 8692
+# spring配置
+spring:
+  profiles:
+    active: dev1
+  banner:
+    location: classpath:/sysconfig/banner.txt
+  redis:
+    # Redis服务器的密码
+    password: sskj2020
+    # 连接超时
+    timeout: 5000ms
+    # 集群节点（主从节点都需配置）
+    cluster:
+      nodes: 192.168.0.161:6379,192.168.0.161:6380,192.168.0.161:6381,192.168.0.161:6382,192.168.0.161:6383,192.168.0.161:6384
+      # 获取失败，最大重定向次数
+      max-redirects: 3
+    # Jedis连接池
+    jedis:
+      pool:
+        #连接池最大阻塞等待时间（使用负值表示没有限制）
+        max-wait: -1s
+        #连接池最大连接数（使用负值表示没有限制）
+        max-active: 8
+        #连接池中的最大空闲连接
+        max-idle: 8
+        #接池中的最小空闲连接
+        min-idle: 0
+  #配置rabbitmq服务器
+  rabbitmq:
+#    host: 192.168.0.115
+#    port: 5672
+    addresses: 192.168.0.115:5672,192.168.0.161:5672,192.168.0.189:5672
+    username: lucky                 #用户名
+    password: 123456                #密码
+    virtual-host: /ems              #虚拟主机
+    listener:                       #并发量配置
+      simple:
+        concurrency: 10             #并发消费者的初始化值
+        max-concurrency: 20         #并发消费者的最大值
+        prefetch: 5                 #每个消费者每次监听时可拉取处理的消息数量
+        acknowledge-mode: manual    #手动签收
+        auto-startup: false
+      direct:
+        auto-startup: false
+    #消息确认配置项
+    #确认消息已经发送到交换机（Exchange）
+    publisher-confirm-type: correlated
+    #确认消息已经发送到队列（Queue）
+    publisher-returns: true
+
+  #  mvc:
+  #    static-path-pattern: /static/**
+  #resources:
+  # static-locations: classpath:/static,classpath:/templates/
+  thymeleaf:
+    cache: false
+    encoding: UTF-8
+    mode: HTML5
+    prefix:
+      classpath: /templates
+    suffix: .html
+#MyBatis-plus配置
+mybatis-plus:
+  #配置扫描mapping文件，找到所有的.xml映射文件
+  mapper-locations: classpath:mybatis/**/*.xml
+  global-config:
+    banner: false
+  # 实体Bean全包名的别名配置，默认为实体类名
+  type-aliases-package: com.kcm.**.entity
+  configuration:
+    cache-enabled: false
+#日志配置
+logging:
+  config: classpath:sysconfig/logback.xml
+  level:
+    com.kcm.modules.**.dao.*: debug
+# 配置swagger开关
+swagger:
+  show: true
+
+

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.dao.LiqFilterConditionDao">
+  <resultMap id="BaseResultMap" type="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.entity.LiqFilterCondition">
+    <result column="WELL_NAME" jdbcType="VARCHAR" property="wellName" />
+    <result column="PROD_DATE" jdbcType="TIMESTAMP" property="prodDate" />
+    <result column="FILTER" jdbcType="VARCHAR" property="filter" />
+    <result column="APPOINT_DATE" jdbcType="TIMESTAMP" property="appointDate" />
+  </resultMap>
+  <insert id="insert" parameterType="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.entity.LiqFilterCondition">
+    insert into LIQ_FILTER_CONDITION (WELL_NAME, PROD_DATE, "FILTER", 
+      APPOINT_DATE)
+    values (#{wellName,jdbcType=VARCHAR}, #{prodDate,jdbcType=TIMESTAMP}, #{filter,jdbcType=VARCHAR}, 
+      #{appointDate,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.entity.LiqFilterCondition">
+    insert into LIQ_FILTER_CONDITION
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="wellName != null">
+        WELL_NAME,
+      </if>
+      <if test="prodDate != null">
+        PROD_DATE,
+      </if>
+      <if test="filter != null">
+        "FILTER",
+      </if>
+      <if test="appointDate != null">
+        APPOINT_DATE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="wellName != null">
+        #{wellName,jdbcType=VARCHAR},
+      </if>
+      <if test="prodDate != null">
+        #{prodDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="filter != null">
+        #{filter,jdbcType=VARCHAR},
+      </if>
+      <if test="appointDate != null">
+        #{appointDate,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select a.*
+    from LIQ_FILTER_CONDITION a
+  </select>
+
+  <!--条件查询（时间以及采油站）-->
+  <select id="selectByTimeAndOrg" parameterType="java.lang.String" resultMap="BaseResultMap">
+    SELECT a.* from LIQ_FILTER_CONDITION a
+    left join CD_WELL_SOURCE b on a.WELL_NAME=b.WELL_NAME
+    where to_char(a.PROD_DATE,'yyyy-mm-dd')=#{prodDate,jdbcType=VARCHAR}
+    <if test='orgName!="全站"'>
+      and b.ORG_NAME =#{orgName,jdbcType=VARCHAR}
+    </if>
+  </select>
+
+  <!--通过井号和时间删除-->
+  <delete id="deleteByWellNameAndDate" parameterType="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.entity.LiqFilterCondition" >
+    delete
+    from LIQ_FILTER_CONDITION a
+    where WELL_NAME = #{wellName,jdbcType=VARCHAR}
+    AND to_char(PROD_DATE,'yyyy-mm-dd hh-mm-ss')=to_char(#{prodDate,jdbcType=VARCHAR},'yyyy-mm-dd hh-mm-ss')
+  </delete>
+
+  <update id="updateByTerm" parameterType="com.kcm.modules.diagnosis.knowledge.liquidabnormalscreen.entity.LiqFilterCondition">
+    update LIQ_FILTER_CONDITION
+    set WELL_NAME=#{wellName,jdbcType=VARCHAR},
+        PROD_DATE=#{prodDate,jdbcType=TIMESTAMP},
+        FILTER=#{filter,jdbcType=VARCHAR},
+        APPOINT_DATE=#{appointDate,jdbcType=TIMESTAMP}
+    where WELL_NAME=#{wellName,jdbcType=VARCHAR}
+    and to_char(PROD_DATE,'yyyy-mm-dd hh-mm-ss')=to_char(#{prodDate,jdbcType=TIMESTAMP},'yyyy-mm-dd hh-mm-ss')
+  </update>
+</mapper>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.diagnosis.knowledge.tile.dao.MeasuresInfoDao">
+  <resultMap id="BaseResultMap" type="com.kcm.modules.diagnosis.knowledge.tile.entity.MeasuresInfo">
+    <result column="PRIMARY_ID" jdbcType="VARCHAR" property="primaryId" />
+    <result column="DIAGNOSTIC_RESULTS" jdbcType="VARCHAR" property="diagnosticResults" />
+    <result column="MEASURE" jdbcType="VARCHAR" property="measure" />
+  </resultMap>
+  <insert id="insert" keyColumn="PRIMARY_ID" keyProperty="primaryId" parameterType="com.kcm.modules.diagnosis.knowledge.tile.entity.MeasuresInfo" useGeneratedKeys="true">
+    insert into MEASURES_INFO (DIAGNOSTIC_RESULTS, MEASURE)
+    values (#{diagnosticResults,jdbcType=VARCHAR}, #{measure,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" keyColumn="PRIMARY_ID" keyProperty="primaryId" parameterType="com.kcm.modules.diagnosis.knowledge.tile.entity.MeasuresInfo" useGeneratedKeys="true">
+    insert into MEASURES_INFO
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="diagnosticResults != null">
+        DIAGNOSTIC_RESULTS,
+      </if>
+      <if test="measure != null">
+        MEASURE,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="diagnosticResults != null">
+        #{diagnosticResults,jdbcType=VARCHAR},
+      </if>
+      <if test="measure != null">
+        #{measure,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

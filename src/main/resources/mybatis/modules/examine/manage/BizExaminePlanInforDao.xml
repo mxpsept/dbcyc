@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.examine.manage.dao.BizExaminePlanInforDao">
+  <resultMap id="BaseResultMap" type="com.kcm.modules.examine.manage.entity.BizExaminePlanInfor">
+    <id column="EXAMINE_P_ID" jdbcType="VARCHAR" property="examinePId" />
+    <result column="PLAN_NAME" jdbcType="VARCHAR" property="planName" />
+    <result column="START_DATE" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="END_DATE" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="EXAMINE_T_ID" jdbcType="VARCHAR" property="examineTId" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="ACTIVE" jdbcType="VARCHAR" property="active" />
+    <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_DEPT_ID" jdbcType="VARCHAR" property="createDeptId" />
+    <result column="EDIT_USER_ID" jdbcType="VARCHAR" property="editUserId" />
+    <result column="EDIT_TIME" jdbcType="TIMESTAMP" property="editTime" />
+    <result column="EDIT_DEPT_ID" jdbcType="VARCHAR" property="editDeptId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    EXAMINE_P_ID, PLAN_NAME, START_DATE, END_DATE, EXAMINE_T_ID, REMARK, ACTIVE, CREATE_USER_ID, 
+    CREATE_TIME, CREATE_DEPT_ID, EDIT_USER_ID, EDIT_TIME, EDIT_DEPT_ID
+  </sql>
+  <resultMap id="BizExaminePlanInforVoResultMap" type="com.kcm.modules.examine.manage.vo.BizExaminePlanInforVo">
+
+  </resultMap>
+  <!--根据ID查询考核计划信息详情-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from BIZ_EXAMINE_PLAN_INFOR
+    where EXAMINE_P_ID = #{examinePId,jdbcType=VARCHAR}
+  </select>
+
+  <!--分页查询所有考核计划信息-->
+  <select id="queryByPageAll" parameterType="java.lang.String" resultMap="BizExaminePlanInforVoResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from BIZ_EXAMINE_PLAN_INFOR a
+    where a.ACTIVE = '1'
+  </select>
+  <!--根据主键删除考核计划信息(假删除)-->
+  <update id="deleteByPrimaryKey" parameterType="java.lang.String">
+    update BIZ_EXAMINE_PLAN_INFOR a
+    <set>
+      a.ACTIVE = '0'
+    </set>
+    where
+    a.EXAMINE_P_ID = #{examinePId,jdbcType=VARCHAR}
+  </update>
+  <!--根据模板名称查询模板信息-->
+  <select id="selectByPlanNamePage" parameterType="java.lang.String" resultMap="BizExaminePlanInforVoResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from BIZ_EXAMINE_PLAN_INFOR a
+    where a.ACTIVE = '1'
+    <if test="planName != null and planName != ''">
+      AND a.PLAN_NAME like concat(#{planName,jdbcType=VARCHAR},'%')
+    </if>
+  </select>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kcm.modules.examine.manage.entity.BizExaminePlanInfor">
+    update BIZ_EXAMINE_PLAN_INFOR
+    <set>
+      <if test="planName != null">
+        PLAN_NAME = #{planName,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null">
+        START_DATE = #{startDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="endDate != null">
+        END_DATE = #{endDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="examineTId != null">
+        EXAMINE_T_ID = #{examineTId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="active != null">
+        ACTIVE = #{active,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDeptId != null">
+        CREATE_DEPT_ID = #{createDeptId,jdbcType=VARCHAR},
+      </if>
+      <if test="editUserId != null">
+        EDIT_USER_ID = #{editUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="editTime != null">
+        EDIT_TIME = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editDeptId != null">
+        EDIT_DEPT_ID = #{editDeptId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where EXAMINE_P_ID = #{examinePId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kcm.modules.examine.manage.entity.BizExaminePlanInfor">
+    update BIZ_EXAMINE_PLAN_INFOR
+    set PLAN_NAME = #{planName,jdbcType=VARCHAR},
+      START_DATE = #{startDate,jdbcType=TIMESTAMP},
+      END_DATE = #{endDate,jdbcType=TIMESTAMP},
+      EXAMINE_T_ID = #{examineTId,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      ACTIVE = #{active,jdbcType=VARCHAR},
+      CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_DEPT_ID = #{createDeptId,jdbcType=VARCHAR},
+      EDIT_USER_ID = #{editUserId,jdbcType=VARCHAR},
+      EDIT_TIME = #{editTime,jdbcType=TIMESTAMP},
+      EDIT_DEPT_ID = #{editDeptId,jdbcType=VARCHAR}
+    where EXAMINE_P_ID = #{examinePId,jdbcType=VARCHAR}
+  </update>
+</mapper>

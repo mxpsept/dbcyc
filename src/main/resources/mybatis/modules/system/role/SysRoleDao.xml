@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.system.role.dao.SysRoleDao">
+    <resultMap id="BaseResultMap" type="com.kcm.modules.system.role.entity.SysRole">
+        <id column="ROLE_ID" jdbcType="VARCHAR" property="roleId"/>
+        <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName"/>
+        <result column="ROLE_KEY" jdbcType="VARCHAR" property="roleKey"/>
+        <result column="SEQUENCE" jdbcType="DECIMAL" property="sequence"/>
+        <result column="STATUS" jdbcType="VARCHAR" property="status"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="ACTIVE" jdbcType="VARCHAR" property="active"/>
+        <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CREATE_DEPT_ID" jdbcType="VARCHAR" property="createDeptId"/>
+        <result column="EDIT_USER_ID" jdbcType="VARCHAR" property="editUserId"/>
+        <result column="EDIT_TIME" jdbcType="TIMESTAMP" property="editTime"/>
+        <result column="EDIT_DEPT_ID" jdbcType="VARCHAR" property="editDeptId"/>
+    </resultMap>
+    <!--  SysRoleVO  -->
+    <resultMap id="SysRoleVOResultMap" type="com.kcm.modules.system.role.vo.SysRoleVo" extends="BaseResultMap">
+        <result column="MODULE_IDS" jdbcType="VARCHAR" property="moduleIds"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ROLE_ID, ROLE_NAME, ROLE_KEY, "SEQUENCE", "STATUS", REMARK, ACTIVE, CREATE_USER_ID, 
+    CREATE_TIME, CREATE_DEPT_ID, EDIT_USER_ID, EDIT_TIME, EDIT_DEPT_ID
+  </sql>
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from SYS_ROLE a
+        where a.ACTIVE = '1'
+        and a.ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </select>
+    <!--查询所有角色(普通分页查询)-->
+    <select id="queryRoleAll" parameterType="Map" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from (select ROWNUM AS ROWNO, R.*
+        from SYS_ROLE R
+        where ACTIVE = '1' AND ROWNUM <![CDATA[ <= ]]> #{pageSize,jdbcType=INTEGER}) TABLE_ALIAS
+        where TABLE_ALIAS.ROWNO <![CDATA[ >= ]]> #{currIndex,jdbcType=INTEGER}
+    </select>
+    <!--查询所有角色(插件分页查询)-->
+    <select id="queryByPageAll" resultMap="SysRoleVOResultMap">
+        SELECT a.*,b.MODULE_IDS
+        FROM SYS_ROLE a LEFT JOIN
+        (select ROLE_ID,(listagg(MODULE_ID, ',') within group( order by MODULE_ID)) as MODULE_IDS from SYS_ROLE_MODULE GROUP BY ROLE_ID) b
+        on a.ROLE_ID=b.ROLE_ID
+        where a.ACTIVE = '1'
+        order by a.SEQUENCE
+    </select>
+    <!--根据角色名称列表查询-->
+    <select id="queryRoleByTerm" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from SYS_ROLE R
+        where ACTIVE = '1'
+        <if test="status != null and status != ''">
+            AND R.STATUS = #{status,jdbcType=VARCHAR}
+        </if>
+        <if test="roleName != null and roleName != ''">
+            AND R.ROLE_NAME = #{roleName,jdbcType=VARCHAR}
+        </if>
+        <if test="roleKey != null and roleKey != ''">
+            AND R.ROLE_KEY = #{roleKey,jdbcType=VARCHAR}
+        </if>
+    </select>
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from SYS_ROLE
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </delete>
+    <!--根据主键删除角色(假删除)-->
+    <update id="updateForActiveByPk" parameterType="java.lang.String">
+        update SYS_ROLE
+        <set>
+            ACTIVE = '0'
+        </set>
+        where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </update>
+    <insert id="insert" keyColumn="ROLE_ID" keyProperty="roleId"
+            parameterType="com.kcm.modules.system.role.entity.SysRole" useGeneratedKeys="true">
+        insert into SYS_ROLE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                ROLE_ID,
+            </if>
+            <if test="roleName != null">
+                ROLE_NAME,
+            </if>
+            <if test="roleKey != null">
+                ROLE_KEY,
+            </if>
+            <if test="sequence != null">
+                "SEQUENCE",
+            </if>
+            <if test="status != null">
+                "STATUS",
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="active != null">
+                ACTIVE,
+            </if>
+            <if test="createUserId != null">
+                CREATE_USER_ID,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="createDeptId != null">
+                CREATE_DEPT_ID,
+            </if>
+            <if test="editUserId != null">
+                EDIT_USER_ID,
+            </if>
+            <if test="editTime != null">
+                EDIT_TIME,
+            </if>
+            <if test="editDeptId != null">
+                EDIT_DEPT_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                #{roleId,jdbcType=VARCHAR},
+            </if>
+            <if test="roleName != null">
+                #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleKey != null">
+                #{roleKey,jdbcType=VARCHAR},
+            </if>
+            <if test="sequence != null">
+                #{sequence,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="active != null">
+                #{active,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDeptId != null">
+                #{createDeptId,jdbcType=VARCHAR},
+            </if>
+            <if test="editUserId != null">
+                #{editUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="editTime != null">
+                #{editTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="editDeptId != null">
+                #{editDeptId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.kcm.modules.system.role.entity.SysRole">
+        update SYS_ROLE
+        <set>
+            <if test="roleName != null">
+                ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+            </if>
+            <if test="roleKey != null">
+                ROLE_KEY = #{roleKey,jdbcType=VARCHAR},
+            </if>
+            <if test="sequence != null">
+                "SEQUENCE" = #{sequence,jdbcType=DECIMAL},
+            </if>
+            <if test="status != null">
+                "STATUS" = #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="active != null">
+                ACTIVE = #{active,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDeptId != null">
+                CREATE_DEPT_ID = #{createDeptId,jdbcType=VARCHAR},
+            </if>
+            <if test="editUserId != null">
+                EDIT_USER_ID = #{editUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="editTime != null">
+                EDIT_TIME = #{editTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="editDeptId != null">
+                EDIT_DEPT_ID = #{editDeptId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+    </update>
+</mapper>

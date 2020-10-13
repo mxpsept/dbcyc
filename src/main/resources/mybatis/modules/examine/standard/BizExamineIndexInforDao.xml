@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.examine.standard.dao.BizExamineIndexInforDao">
+    <resultMap id="BaseResultMap" type="com.kcm.modules.examine.standard.entity.BizExamineIndexInfor">
+        <id column="INDEX_ID" jdbcType="VARCHAR" property="indexId"/>
+        <result column="INDEX_NAME" jdbcType="VARCHAR" property="indexName"/>
+        <result column="INDEX_P_ID" jdbcType="VARCHAR" property="indexPId"/>
+        <result column="SCORE_WEIGHT" jdbcType="TIMESTAMP" property="scoreWeight"/>
+        <result column="SEQUENCE" jdbcType="DECIMAL" property="sequence"/>
+        <result column="EXAMINE_T_ID" jdbcType="VARCHAR" property="examineTId"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="ACTIVE" jdbcType="VARCHAR" property="active"/>
+        <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CREATE_DEPT_ID" jdbcType="VARCHAR" property="createDeptId"/>
+        <result column="EDIT_USER_ID" jdbcType="VARCHAR" property="editUserId"/>
+        <result column="EDIT_TIME" jdbcType="TIMESTAMP" property="editTime"/>
+        <result column="EDIT_DEPT_ID" jdbcType="VARCHAR" property="editDeptId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+        INDEX_ID, INDEX_NAME,INDEX_P_ID,SCORE_WEIGHT,SEQUENCE,
+        EXAMINE_T_ID,REMARK,ACTIVE,CREATE_USER_ID,CREATE_TIME,CREATE_DEPT_ID,EDIT_USER_ID,EDIT_TIME,
+        EDIT_DEPT_ID
+    </sql>
+
+    <!--查询所有考核指标数据(分页插件查询)-->
+    <select id="queryByPageAll" parameterType="java.lang.String" resultType="com.kcm.modules.examine.standard.vo.BizDetailInfoListPageVo">
+        select
+        <include refid="Base_Column_List"/>
+        from BIZ_EXAMINE_INDEX_INFOR a
+        where  a.ACTIVE = '1'
+        order by SEQUENCE
+    </select>
+
+    <!--查询所有考核指标数据(分页插件查询)-->
+    <select id="queryByPageAndConAll" parameterType="java.lang.String" resultType="com.kcm.modules.examine.standard.vo.BizIndexInforVo">
+        select
+        <include refid="Base_Column_List"/>
+        from BIZ_EXAMINE_INDEX_INFOR a
+        where  a.ACTIVE = '1' and a.INDEX_NAME LIKE concat(concat('%',#{indexName,jdbcType=VARCHAR}),'%')
+        order by SEQUENCE
+    </select>
+
+    <insert id="insertSelect" parameterType="com.kcm.modules.examine.standard.entity.BizExamineIndexInfor" >
+        <!--<selectKey resultType="java.lang.String" order="AFTER" keyProperty="indexId">&lt;!&ndash; 以前没学过，要特别留意 &ndash;&gt;-->
+            <!--select SEQ_BIZ_EXAMINE_INDEX_INFOR.nextval as indexId from BIZ_EXAMINE_INDEX_INFOR-->
+        <!--</selectKey>-->
+        insert into BIZ_EXAMINE_INDEX_INFOR (INDEX_ID, INDEX_NAME,INDEX_P_ID,SCORE_WEIGHT,SEQUENCE,
+        EXAMINE_T_ID,REMARK,ACTIVE,CREATE_USER_ID,CREATE_TIME,CREATE_DEPT_ID,EDIT_USER_ID,EDIT_TIME,
+        EDIT_DEPT_ID)
+        values (#{indexId,jdbcType=BIGINT}, #{indexName,jdbcType=VARCHAR},#{indexPId,jdbcType=BIGINT},
+        #{scoreWeight,jdbcType=BIGINT},#{sequence,jdbcType=BIGINT},#{examineTId,jdbcType=BIGINT},
+        #{remark,jdbcType=BIGINT},#{active,jdbcType=BIGINT},#{createUserId,jdbcType=BIGINT},#{createTime,jdbcType=DATE},
+        #{createDeptId,jdbcType=BIGINT},#{editUserId,jdbcType=BIGINT},#{editTime,jdbcType=DATE},#{editDeptId,jdbcType=BIGINT})
+    </insert>
+
+</mapper>

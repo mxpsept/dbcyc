@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.system.module.dao.SysModuleDao">
+    <resultMap id="BaseResultMap" type="com.kcm.modules.system.module.entity.SysModule">
+        <id column="MODULE_ID" jdbcType="VARCHAR" property="moduleId"/>
+        <result column="MODULE_NAME" jdbcType="VARCHAR" property="moduleName"/>
+        <result column="PARENT_MODULE_ID" jdbcType="VARCHAR" property="parentModuleId"/>
+        <result column="MODULE_URL" jdbcType="VARCHAR" property="moduleUrl"/>
+        <result column="MODULE_TYPE" jdbcType="VARCHAR" property="moduleType"/>
+        <result column="PERMISSION_MARK" jdbcType="VARCHAR" property="permissionMark"/>
+        <result column="ICON" jdbcType="VARCHAR" property="icon"/>
+        <result column="SEQUENCE" jdbcType="DECIMAL" property="sequence"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="ACTIVE" jdbcType="VARCHAR" property="active"/>
+        <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CREATE_DEPT_ID" jdbcType="VARCHAR" property="createDeptId"/>
+        <result column="EDIT_USER_ID" jdbcType="VARCHAR" property="editUserId"/>
+        <result column="EDIT_TIME" jdbcType="TIMESTAMP" property="editTime"/>
+        <result column="EDIT_DEPT_ID" jdbcType="VARCHAR" property="editDeptId"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    MODULE_ID, MODULE_NAME, PARENT_MODULE_ID, MODULE_URL, MODULE_TYPE, PERMISSION_MARK, 
+    ICON, "SEQUENCE", REMARK, ACTIVE, CREATE_USER_ID, CREATE_TIME, CREATE_DEPT_ID, EDIT_USER_ID, 
+    EDIT_TIME, EDIT_DEPT_ID
+  </sql>
+    <select id="queryAll" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from SYS_MODULE
+        where ACTIVE = '1'
+    </select>
+    <!--根据主键查询菜单信息-->
+    <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from SYS_MODULE
+        where MODULE_ID = #{moduleId,jdbcType=VARCHAR}
+    </select>
+    <!--根据主键查询菜单及所有子菜单信息-->
+    <select id="selectAllByPk" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from SYS_MODULE
+        start with MODULE_ID = #{moduleId,jdbcType=VARCHAR}
+        connect by prior MODULE_ID = PARENT_MODULE_ID
+    </select>
+    <!--根据主键删除菜单(真删除)-->
+    <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from SYS_MODULE
+    where MODULE_ID = #{moduleId,jdbcType=VARCHAR}
+    </delete>
+    <!--根据主键删除菜单(假删除)-->
+    <update id="updateForActiveByPk" parameterType="java.lang.String">
+        update SYS_MODULE
+        <set>
+            ACTIVE = '0'
+        </set>
+        where MODULE_ID = #{moduleId,jdbcType=VARCHAR}
+    </update>
+    <insert id="insertSelective" keyColumn="MODULE_ID" keyProperty="moduleId"
+            parameterType="com.kcm.modules.system.module.entity.SysModule" useGeneratedKeys="true">
+        insert into SYS_MODULE
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="moduleId != null">
+                MODULE_ID,
+            </if>
+            <if test="moduleName != null">
+                MODULE_NAME,
+            </if>
+            <if test="parentModuleId != null">
+                PARENT_MODULE_ID,
+            </if>
+            <if test="moduleUrl != null">
+                MODULE_URL,
+            </if>
+            <if test="moduleType != null">
+                MODULE_TYPE,
+            </if>
+            <if test="permissionMark != null">
+                PERMISSION_MARK,
+            </if>
+            <if test="icon != null">
+                ICON,
+            </if>
+            <if test="sequence != null">
+                "SEQUENCE",
+            </if>
+            <if test="remark != null">
+                REMARK,
+            </if>
+            <if test="active != null">
+                ACTIVE,
+            </if>
+            <if test="createUserId != null">
+                CREATE_USER_ID,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="createDeptId != null">
+                CREATE_DEPT_ID,
+            </if>
+            <if test="editUserId != null">
+                EDIT_USER_ID,
+            </if>
+            <if test="editTime != null">
+                EDIT_TIME,
+            </if>
+            <if test="editDeptId != null">
+                EDIT_DEPT_ID,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="moduleId != null">
+                #{moduleId,jdbcType=VARCHAR},
+            </if>
+            <if test="moduleName != null">
+                #{moduleName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentModuleId != null">
+                #{parentModuleId,jdbcType=VARCHAR},
+            </if>
+            <if test="moduleUrl != null">
+                #{moduleUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="moduleType != null">
+                #{moduleType,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionMark != null">
+                #{permissionMark,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="sequence != null">
+                #{sequence,jdbcType=DECIMAL},
+            </if>
+            <if test="remark != null">
+                #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="active != null">
+                #{active,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDeptId != null">
+                #{createDeptId,jdbcType=VARCHAR},
+            </if>
+            <if test="editUserId != null">
+                #{editUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="editTime != null">
+                #{editTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="editDeptId != null">
+                #{editDeptId,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKey" parameterType="com.kcm.modules.system.module.entity.SysModule">
+        update SYS_MODULE
+        <set>
+            <if test="moduleName != null">
+                MODULE_NAME = #{moduleName,jdbcType=VARCHAR},
+            </if>
+            <if test="parentModuleId != null">
+                PARENT_MODULE_ID = #{parentModuleId,jdbcType=VARCHAR},
+            </if>
+            <if test="moduleUrl != null">
+                MODULE_URL = #{moduleUrl,jdbcType=VARCHAR},
+            </if>
+            <if test="moduleType != null">
+                MODULE_TYPE = #{moduleType,jdbcType=VARCHAR},
+            </if>
+            <if test="permissionMark != null">
+                PERMISSION_MARK = #{permissionMark,jdbcType=VARCHAR},
+            </if>
+            <if test="icon != null">
+                ICON = #{icon,jdbcType=VARCHAR},
+            </if>
+            <if test="sequence != null">
+                "SEQUENCE" = #{sequence,jdbcType=DECIMAL},
+            </if>
+            <if test="remark != null">
+                REMARK = #{remark,jdbcType=VARCHAR},
+            </if>
+            <if test="active != null">
+                ACTIVE = #{active,jdbcType=VARCHAR},
+            </if>
+            <if test="createUserId != null">
+                CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="createDeptId != null">
+                CREATE_DEPT_ID = #{createDeptId,jdbcType=VARCHAR},
+            </if>
+            <if test="editUserId != null">
+                EDIT_USER_ID = #{editUserId,jdbcType=VARCHAR},
+            </if>
+            <if test="editTime != null">
+                EDIT_TIME = #{editTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="editDeptId != null">
+                EDIT_DEPT_ID = #{editDeptId,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where MODULE_ID = #{moduleId,jdbcType=VARCHAR}
+    </update>
+</mapper>

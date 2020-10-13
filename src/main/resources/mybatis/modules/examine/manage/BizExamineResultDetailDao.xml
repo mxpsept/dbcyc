@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.examine.manage.dao.BizExamineResultDetailDao">
+  <resultMap id="BaseResultMap" type="com.kcm.modules.examine.manage.entity.BizExamineResultDetail">
+    <id column="EXAMINE_RD_ID" jdbcType="VARCHAR" property="examineRdId" />
+    <result column="SINGLE_SCORE" jdbcType="DECIMAL" property="singleScore" />
+    <result column="RATER" jdbcType="VARCHAR" property="rater" />
+    <result column="RATE_DATE" jdbcType="TIMESTAMP" property="rateDate" />
+    <result column="INDEX_D_ID" jdbcType="VARCHAR" property="indexDId" />
+    <result column="EXAMINE_R_ID" jdbcType="VARCHAR" property="examineRId" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="ACTIVE" jdbcType="VARCHAR" property="active" />
+    <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_DEPT_ID" jdbcType="VARCHAR" property="createDeptId" />
+    <result column="EDIT_USER_ID" jdbcType="VARCHAR" property="editUserId" />
+    <result column="EDIT_TIME" jdbcType="TIMESTAMP" property="editTime" />
+    <result column="EDIT_DEPT_ID" jdbcType="VARCHAR" property="editDeptId" />
+  </resultMap>
+  <resultMap id="BaseResultMapIndexDetail" type="com.kcm.modules.examine.standard.entity.BizExamineIndexDetail">
+    <id column="INDEX_D_ID" jdbcType="VARCHAR" property="indexDId" />
+    <result column="EXAMINE_CONTENT" jdbcType="VARCHAR" property="examineContent" />
+    <result column="REQUIREMENT" jdbcType="VARCHAR" property="requirement" />
+    <result column="EXAMINE_STANDARD" jdbcType="VARCHAR" property="examineStandard" />
+    <result column="SCORE" jdbcType="DECIMAL" property="score" />
+    <result column="SEQUENCE" jdbcType="DECIMAL" property="sequence" />
+    <result column="INDEX_ID" jdbcType="VARCHAR" property="indexId" />
+    <result column="REMARK" jdbcType="VARCHAR" property="remark" />
+    <result column="ACTIVE" jdbcType="VARCHAR" property="active" />
+    <result column="CREATE_USER_ID" jdbcType="VARCHAR" property="createUserId" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="CREATE_DEPT_ID" jdbcType="VARCHAR" property="createDeptId" />
+    <result column="EDIT_USER_ID" jdbcType="VARCHAR" property="editUserId" />
+    <result column="EDIT_TIME" jdbcType="TIMESTAMP" property="editTime" />
+    <result column="EDIT_DEPT_ID" jdbcType="VARCHAR" property="editDeptId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    EXAMINE_RD_ID, SINGLE_SCORE, RATER, RATE_DATE, INDEX_D_ID, EXAMINE_R_ID, REMARK, 
+    ACTIVE, CREATE_USER_ID, CREATE_TIME, CREATE_DEPT_ID, EDIT_USER_ID, EDIT_TIME, EDIT_DEPT_ID
+  </sql>
+  <resultMap id="BizExamineIndexDetailVoResultMap" type="com.kcm.modules.examine.manage.vo.BizExamineIndexDetailVo" extends="BaseResultMapIndexDetail">
+    <result column="EXAMINE_R_ID" jdbcType="VARCHAR" property="examineRId" />
+    <result column="INDEX_NAME" jdbcType="VARCHAR" property="indexName" />
+    <result column="SCORE_WEIGHT" jdbcType="DECIMAL" property="scoreWeight" />
+    <result column="SINGLE_SCORE" jdbcType="DECIMAL" property="singleScore" />
+  </resultMap>
+  <!--根据考核结果详情id查询考核结果详情信息-->
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from BIZ_EXAMINE_RESULT_DETAIL
+    where EXAMINE_RD_ID = #{examineRdId,jdbcType=VARCHAR}
+  </select>
+  <!--根据考核结果id查询考核指标明细相关信息-->
+  <select id="selectByRId" parameterType="java.lang.String" resultMap="BizExamineIndexDetailVoResultMap">
+    SELECT b.INDEX_NAME,b.SCORE_WEIGHT,d.EXAMINE_R_ID,a.* FROM BIZ_EXAMINE_INDEX_DETAIL a
+    LEFT JOIN BIZ_EXAMINE_INDEX_INFOR b ON a.INDEX_ID=b.INDEX_ID
+    LEFT JOIN BIZ_EXAMINE_PLAN_INFOR c ON b.EXAMINE_T_ID=c.EXAMINE_T_ID
+    LEFT JOIN BIZ_EXAMINE_RESULT_INFOR d ON c.EXAMINE_P_ID=d.EXAMINE_P_ID
+    WHERE a.ACTIVE = '1'
+    and d.EXAMINE_R_ID=#{examineRdId,jdbcType=VARCHAR}
+    order by a.SEQUENCE
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from BIZ_EXAMINE_RESULT_DETAIL
+    where EXAMINE_RD_ID = #{examineRdId,jdbcType=VARCHAR}
+  </delete>
+  <update id="updateByPrimaryKeySelective" parameterType="com.kcm.modules.examine.manage.entity.BizExamineResultDetail">
+    update BIZ_EXAMINE_RESULT_DETAIL
+    <set>
+      <if test="singleScore != null">
+        SINGLE_SCORE = #{singleScore,jdbcType=DECIMAL},
+      </if>
+      <if test="rater != null">
+        RATER = #{rater,jdbcType=VARCHAR},
+      </if>
+      <if test="rateDate != null">
+        RATE_DATE = #{rateDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="indexDId != null">
+        INDEX_D_ID = #{indexDId,jdbcType=VARCHAR},
+      </if>
+      <if test="examineRId != null">
+        EXAMINE_R_ID = #{examineRId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="active != null">
+        ACTIVE = #{active,jdbcType=VARCHAR},
+      </if>
+      <if test="createUserId != null">
+        CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="createDeptId != null">
+        CREATE_DEPT_ID = #{createDeptId,jdbcType=VARCHAR},
+      </if>
+      <if test="editUserId != null">
+        EDIT_USER_ID = #{editUserId,jdbcType=VARCHAR},
+      </if>
+      <if test="editTime != null">
+        EDIT_TIME = #{editTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="editDeptId != null">
+        EDIT_DEPT_ID = #{editDeptId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where EXAMINE_RD_ID = #{examineRdId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.kcm.modules.examine.manage.entity.BizExamineResultDetail">
+    update BIZ_EXAMINE_RESULT_DETAIL
+    set SINGLE_SCORE = #{singleScore,jdbcType=DECIMAL},
+      RATER = #{rater,jdbcType=VARCHAR},
+      RATE_DATE = #{rateDate,jdbcType=TIMESTAMP},
+      INDEX_D_ID = #{indexDId,jdbcType=VARCHAR},
+      EXAMINE_R_ID = #{examineRId,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      ACTIVE = #{active,jdbcType=VARCHAR},
+      CREATE_USER_ID = #{createUserId,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATE_DEPT_ID = #{createDeptId,jdbcType=VARCHAR},
+      EDIT_USER_ID = #{editUserId,jdbcType=VARCHAR},
+      EDIT_TIME = #{editTime,jdbcType=TIMESTAMP},
+      EDIT_DEPT_ID = #{editDeptId,jdbcType=VARCHAR}
+    where EXAMINE_RD_ID = #{examineRdId,jdbcType=VARCHAR}
+  </update>
+</mapper>

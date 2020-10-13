@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.diagnosis.abnormal.oilabnormal.dao.AbnormalProWellDao">
+  <resultMap id="BaseResultMap" type="com.kcm.modules.diagnosis.abnormal.oilabnormal.entity.AbnormalProWell">
+    <result column="PRIMARY_ID" jdbcType="VARCHAR" property="primaryId" />
+    <result column="WELL_ID" jdbcType="VARCHAR" property="wellId" />
+    <result column="WELL_NAME" jdbcType="VARCHAR" property="wellName" />
+    <result column="PROD_DATE" jdbcType="TIMESTAMP" property="prodDate" />
+    <result column="PROD_TIME" jdbcType="DECIMAL" property="prodTime" />
+    <result column="ABNORMAL_PROBLEM" jdbcType="VARCHAR" property="abnormalProblem" />
+    <result column="LIQ_PROD_DAILY" jdbcType="DECIMAL" property="liqProdDaily" />
+    <result column="OIL_PROD_DAILY" jdbcType="DECIMAL" property="oilProdDaily" />
+    <result column="WATER_PROD_DAILY" jdbcType="DECIMAL" property="waterProdDaily" />
+    <result column="GAS_PROD_DAILY" jdbcType="DECIMAL" property="gasProdDaily" />
+    <result column="WATER_CUT" jdbcType="DECIMAL" property="waterCut" />
+    <result column="SALT_CUT" jdbcType="DECIMAL" property="saltCut" />
+    <result column="REMARKS" jdbcType="VARCHAR" property="remarks" />
+    <result column="NORMAL_LIQ_PROD_DAILY" jdbcType="DECIMAL" property="normalLiqProdDaily" />
+    <result column="NORMAL_WATER_CUT" jdbcType="DECIMAL" property="normalWaterCut" />
+    <result column="NORMAL_SALT_CUT" jdbcType="DECIMAL" property="normalSaltCut" />
+    <result column="ARTIFICIAL_CONFIRM_RESULT" jdbcType="VARCHAR" property="artificialConfirmResult" />
+    <result column="CONFIRM_DATETIME" jdbcType="TIMESTAMP" property="confirmDatetime" />
+    <result column="CONFIRM_PERSON" jdbcType="VARCHAR" property="confirmPerson" />
+  </resultMap>
+  <insert id="insert" parameterType="com.kcm.modules.diagnosis.abnormal.oilabnormal.entity.AbnormalProWell">
+    insert into ABNORMAL_PRO_WELL (PRIMARY_ID, WELL_ID, WELL_NAME, 
+      PROD_DATE, PROD_TIME, ABNORMAL_PROBLEM, 
+      LIQ_PROD_DAILY, OIL_PROD_DAILY, WATER_PROD_DAILY, 
+      GAS_PROD_DAILY, WATER_CUT, SALT_CUT, 
+      REMARKS, NORMAL_LIQ_PROD_DAILY, NORMAL_WATER_CUT, 
+      NORMAL_SALT_CUT, ARTIFICIAL_CONFIRM_RESULT, 
+      CONFIRM_DATETIME, CONFIRM_PERSON)
+    values (#{primaryId,jdbcType=VARCHAR}, #{wellId,jdbcType=VARCHAR}, #{wellName,jdbcType=VARCHAR}, 
+      #{prodDate,jdbcType=TIMESTAMP}, #{prodTime,jdbcType=DECIMAL}, #{abnormalProblem,jdbcType=VARCHAR}, 
+      #{liqProdDaily,jdbcType=DECIMAL}, #{oilProdDaily,jdbcType=DECIMAL}, #{waterProdDaily,jdbcType=DECIMAL}, 
+      #{gasProdDaily,jdbcType=DECIMAL}, #{waterCut,jdbcType=DECIMAL}, #{saltCut,jdbcType=DECIMAL}, 
+      #{remarks,jdbcType=VARCHAR}, #{normalLiqProdDaily,jdbcType=DECIMAL}, #{normalWaterCut,jdbcType=DECIMAL}, 
+      #{normalSaltCut,jdbcType=DECIMAL}, #{artificialConfirmResult,jdbcType=VARCHAR}, 
+      #{confirmDatetime,jdbcType=TIMESTAMP}, #{confirmPerson,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kcm.modules.diagnosis.abnormal.oilabnormal.entity.AbnormalProWell">
+    insert into ABNORMAL_PRO_WELL
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="primaryId != null">
+        PRIMARY_ID,
+      </if>
+      <if test="wellId != null">
+        WELL_ID,
+      </if>
+      <if test="wellName != null">
+        WELL_NAME,
+      </if>
+      <if test="prodDate != null">
+        PROD_DATE,
+      </if>
+      <if test="prodTime != null">
+        PROD_TIME,
+      </if>
+      <if test="abnormalProblem != null">
+        ABNORMAL_PROBLEM,
+      </if>
+      <if test="liqProdDaily != null">
+        LIQ_PROD_DAILY,
+      </if>
+      <if test="oilProdDaily != null">
+        OIL_PROD_DAILY,
+      </if>
+      <if test="waterProdDaily != null">
+        WATER_PROD_DAILY,
+      </if>
+      <if test="gasProdDaily != null">
+        GAS_PROD_DAILY,
+      </if>
+      <if test="waterCut != null">
+        WATER_CUT,
+      </if>
+      <if test="saltCut != null">
+        SALT_CUT,
+      </if>
+      <if test="remarks != null">
+        REMARKS,
+      </if>
+      <if test="normalLiqProdDaily != null">
+        NORMAL_LIQ_PROD_DAILY,
+      </if>
+      <if test="normalWaterCut != null">
+        NORMAL_WATER_CUT,
+      </if>
+      <if test="normalSaltCut != null">
+        NORMAL_SALT_CUT,
+      </if>
+      <if test="artificialConfirmResult != null">
+        ARTIFICIAL_CONFIRM_RESULT,
+      </if>
+      <if test="confirmDatetime != null">
+        CONFIRM_DATETIME,
+      </if>
+      <if test="confirmPerson != null">
+        CONFIRM_PERSON,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="primaryId != null">
+        #{primaryId,jdbcType=VARCHAR},
+      </if>
+      <if test="wellId != null">
+        #{wellId,jdbcType=VARCHAR},
+      </if>
+      <if test="wellName != null">
+        #{wellName,jdbcType=VARCHAR},
+      </if>
+      <if test="prodDate != null">
+        #{prodDate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="prodTime != null">
+        #{prodTime,jdbcType=DECIMAL},
+      </if>
+      <if test="abnormalProblem != null">
+        #{abnormalProblem,jdbcType=VARCHAR},
+      </if>
+      <if test="liqProdDaily != null">
+        #{liqProdDaily,jdbcType=DECIMAL},
+      </if>
+      <if test="oilProdDaily != null">
+        #{oilProdDaily,jdbcType=DECIMAL},
+      </if>
+      <if test="waterProdDaily != null">
+        #{waterProdDaily,jdbcType=DECIMAL},
+      </if>
+      <if test="gasProdDaily != null">
+        #{gasProdDaily,jdbcType=DECIMAL},
+      </if>
+      <if test="waterCut != null">
+        #{waterCut,jdbcType=DECIMAL},
+      </if>
+      <if test="saltCut != null">
+        #{saltCut,jdbcType=DECIMAL},
+      </if>
+      <if test="remarks != null">
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="normalLiqProdDaily != null">
+        #{normalLiqProdDaily,jdbcType=DECIMAL},
+      </if>
+      <if test="normalWaterCut != null">
+        #{normalWaterCut,jdbcType=DECIMAL},
+      </if>
+      <if test="normalSaltCut != null">
+        #{normalSaltCut,jdbcType=DECIMAL},
+      </if>
+      <if test="artificialConfirmResult != null">
+        #{artificialConfirmResult,jdbcType=VARCHAR},
+      </if>
+      <if test="confirmDatetime != null">
+        #{confirmDatetime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="confirmPerson != null">
+        #{confirmPerson,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+</mapper>

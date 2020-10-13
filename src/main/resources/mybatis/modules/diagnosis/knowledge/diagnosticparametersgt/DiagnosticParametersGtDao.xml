@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kcm.modules.diagnosis.knowledge.diagnosticparametersgt.dao.DiagnosticParametersGtDao">
+  <resultMap id="BaseResultMap" type="com.kcm.modules.diagnosis.knowledge.diagnosticparametersgt.entity.DiagnosticParametersGt">
+    <result column="DIAGNOSTIC_STEP" jdbcType="VARCHAR" property="diagnosticStep" />
+    <result column="ORDER_NUMBER" jdbcType="DECIMAL" property="orderNumber" />
+    <result column="ABNORMAL_PROBLEM" jdbcType="VARCHAR" property="abnormalProblem" />
+    <result column="DIAGNOSTIC_BASIS" jdbcType="VARCHAR" property="diagnosticBasis" />
+  </resultMap>
+  <insert id="insert" parameterType="com.kcm.modules.diagnosis.knowledge.diagnosticparametersgt.entity.DiagnosticParametersGt">
+    insert into DIAGNOSTIC_PARAMETERS_GT (DIAGNOSTIC_STEP, ORDER_NUMBER, ABNORMAL_PROBLEM, 
+      DIAGNOSTIC_BASIS)
+    values (#{diagnosticStep,jdbcType=VARCHAR}, #{orderNumber,jdbcType=DECIMAL}, #{abnormalProblem,jdbcType=VARCHAR}, 
+      #{diagnosticBasis,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.kcm.modules.diagnosis.knowledge.diagnosticparametersgt.entity.DiagnosticParametersGt">
+    insert into DIAGNOSTIC_PARAMETERS_GT
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="diagnosticStep != null">
+        DIAGNOSTIC_STEP,
+      </if>
+      <if test="orderNumber != null">
+        ORDER_NUMBER,
+      </if>
+      <if test="abnormalProblem != null">
+        ABNORMAL_PROBLEM,
+      </if>
+      <if test="diagnosticBasis != null">
+        DIAGNOSTIC_BASIS,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="diagnosticStep != null">
+        #{diagnosticStep,jdbcType=VARCHAR},
+      </if>
+      <if test="orderNumber != null">
+        #{orderNumber,jdbcType=DECIMAL},
+      </if>
+      <if test="abnormalProblem != null">
+        #{abnormalProblem,jdbcType=VARCHAR},
+      </if>
+      <if test="diagnosticBasis != null">
+        #{diagnosticBasis,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="selectAll" resultMap="BaseResultMap">
+    select a.* from DIAGNOSTIC_PARAMETERS_GT a
+    ORDER BY  nlssort(a.DIAGNOSTIC_STEP,'NLS_SORT=SCHINESE_STROKE_M') asc,a.ORDER_NUMBER
+  </select>
+</mapper>
